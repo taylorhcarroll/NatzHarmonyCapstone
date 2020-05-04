@@ -16,7 +16,6 @@ namespace NatzHarmonyCapstone.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        [Required]
         public string Gender { get; set; }
 
         public int CountryId { get; set; }
@@ -36,7 +35,15 @@ namespace NatzHarmonyCapstone.Models
 
         public string AvatarUrl { get; set; }
 
+        public virtual List<UserMentor> UserMentors { get; set; }
+
+        public virtual List<UserMentor> UserMentees { get; set; }
+
         public virtual List<Language> Languages { get; set; }
+
+        public virtual List<Messages> SentMessages { get; set; }
+
+        public virtual List<Messages> ReceiviedMessages { get; set; }
 
 
     }

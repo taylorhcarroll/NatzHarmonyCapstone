@@ -7,10 +7,14 @@ namespace NatzHarmonyCapstone.Models
 {
     public class UserMentor
     {
-        public int Id { get; set; }
+        public int UserMentorId { get; set; }
         public string UserId { get; set; }
 
+        public ApplicationUser User { get; set; }
+
         public string MentorId { get; set; }
+
+        public ApplicationUser Mentor { get; set; }
 
     }
 }
