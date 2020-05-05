@@ -59,7 +59,7 @@ namespace NatzHarmonyCapstone.Controllers
         // GET: Profiles/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
-            var user = await GetUserAsync();
+            var user = await GetCurrentUserAsync();
             var viewModel = new ProfileFormViewModel
             {
                 Id = user.Id,
@@ -87,7 +87,7 @@ namespace NatzHarmonyCapstone.Controllers
         {
             try
             {
-                var user = await GetUserAsync();
+                var user = await GetCurrentUserAsync();
 
                 user.Id = profileViewModel.Id;
                 user.FirstName = profileViewModel.FirstName;
@@ -156,6 +156,6 @@ namespace NatzHarmonyCapstone.Controllers
                 return View();
             }
         }
-        private async Task<ApplicationUser> GetUserAsync() => await _userManager.GetUserAsync(HttpContext.User);
+        private async Task<ApplicationUser> GetCurrentUserAsync() => await _userManager.GetUserAsync(HttpContext.User);
     }
 }

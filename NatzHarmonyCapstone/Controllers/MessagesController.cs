@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,17 +14,49 @@ namespace NatzHarmonyCapstone.Controllers
     public class MessagesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public MessagesController(ApplicationDbContext context)
+        public MessagesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Messages
         public async Task<IActionResult> Index()
         {
+            var user = await GetCurrentUserAsync();
             var applicationDbContext = _context.Messages.Include(m => m.Recipient).Include(m => m.Sender);
             return View(await applicationDbContext.ToListAsync());
+        }
+
+        // GET: Help
+        public async Task<IActionResult> Help()
+        {
+            var user = await GetCurrentUserAsync();
+            var applicationDbContext = _context.Messages
+                .Where(m => m.SenderId == user.Id && m.Recipient.Admin == true || m.RecipientId == user.Id && m.Sender.Admin == true)
+                .Include(m => m.Recipient).Include(m => m.Sender);
+            return View(await applicationDbContext.ToListAsync());
+        }
+
+        //POST: HelpMessage
+        // POST: Messages/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> HelpSend([Bind("MessagesId,SenderId,RecipientId,Content,TimeStamp,IsRead")] Messages messages)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(messages);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["RecipientId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", messages.RecipientId);
+            ViewData["SenderId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", messages.SenderId);
+            return View(messages);
         }
 
         // GET: Messages/Details/5
@@ -162,5 +195,6 @@ namespace NatzHarmonyCapstone.Controllers
         {
             return _context.Messages.Any(e => e.MessagesId == id);
         }
+        private async Task<ApplicationUser> GetCurrentUserAsync() => await _userManager.GetUserAsync(HttpContext.User);
     }
 }

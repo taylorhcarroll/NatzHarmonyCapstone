@@ -89,6 +89,26 @@ namespace NatzHarmonyCapstone.Data
             user.PasswordHash = passwordHash.HashPassword(user, "Admin8*");
             modelBuilder.Entity<ApplicationUser>().HasData(user);
 
+            ApplicationUser userAdmin = new ApplicationUser
+            {
+                FirstName = "TIRRC",
+                LastName = "Admin",
+                UserName = "tirrc@admin.com",
+                NormalizedUserName = "TIRRC@ADMIN.COM",
+                Email = "tirrc@admin.com",
+                NormalizedEmail = "TIRRC@ADMIN.COM",
+                PhoneNumber = "6155555556",
+                CountryId = 1,
+                EmailConfirmed = false,
+                LockoutEnabled = false,
+                Admin = true,
+                SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
+                Id = "00000000-ffff-ffff-ffff-ffffffffffff"
+            };
+            var passwordHash2 = new PasswordHasher<ApplicationUser>();
+            user.PasswordHash = passwordHash2.HashPassword(userAdmin, "Admin8*");
+            modelBuilder.Entity<ApplicationUser>().HasData(userAdmin);
+
             //this line makes the Countries
             modelBuilder.Entity<Language>().HasData(
                 new Language()
