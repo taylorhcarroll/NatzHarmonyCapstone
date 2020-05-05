@@ -18,6 +18,8 @@ namespace NatzHarmonyCapstone.Models
 
         public string Gender { get; set; }
 
+        public string Pronouns { get; set; }
+
         public int CountryId { get; set; }
 
         public Country Country { get; set; }
