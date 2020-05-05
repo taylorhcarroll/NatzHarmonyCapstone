@@ -30,7 +30,7 @@ namespace NatzHarmonyCapstone.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Help
+        // GET: Messages/Help
         public async Task<IActionResult> Help()
         {
             var user = await GetCurrentUserAsync();
@@ -40,10 +40,7 @@ namespace NatzHarmonyCapstone.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        //POST: HelpMessage
-        // POST: Messages/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Messages/HelpSend
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> HelpSend([Bind("MessagesId,SenderId,RecipientId,Content,TimeStamp,IsRead")] Messages messages)

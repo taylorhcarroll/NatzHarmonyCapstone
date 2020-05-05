@@ -102,8 +102,8 @@ namespace NatzHarmonyCapstone.Data
                 EmailConfirmed = false,
                 LockoutEnabled = false,
                 Admin = true,
-                SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
-                Id = "00000000-ffff-ffff-ffff-ffffffffffff"
+                SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794578",
+                Id = "00000000-ffff-ffff-ffff-ffffffffffaa"
             };
             var passwordHash2 = new PasswordHasher<ApplicationUser>();
             user.PasswordHash = passwordHash2.HashPassword(userAdmin, "Admin8*");
