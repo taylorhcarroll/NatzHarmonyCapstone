@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
+using NatzHarmonyCapstone.Data;
 using NatzHarmonyCapstone.Models;
 
 namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
@@ -24,17 +29,20 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         [BindProperty]
@@ -43,6 +51,14 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
         public string ReturnUrl { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
+
+        public List<SelectListItem> GenderOptions { get; set; }
+
+        public List<SelectListItem> CountryOptions { get; set; }
+
+        public List<SelectListItem> LanguageOptions { get; set; }
+
+        public List<SelectListItem> AvailabilityOptions { get; set; }
 
         public class InputModel
         {
@@ -71,12 +87,15 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
             public string LastName { get; set; }
 
             public string Gender { get; set; }
+           
             public string Pronouns { get; set; }
 
-            public int PhoneNumber { get; set; }
+            public string PhoneNumber { get; set; }
 
             public int CountryId { get; set; }
-
+            
+            public virtual List<Language> Languages { get; set; }
+           
             public bool LanguagePref { get; set; }
 
             public bool CountryPref { get; set; }
@@ -84,22 +103,29 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
             public bool GenderPref { get; set; }
 
             public string Availability { get; set; }
-
+          
             public string AvatarUrl { get; set; }
+
+            [NotMapped]
+            public IFormFile File { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            //populate my view options here
+
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ModelState.Remove("Input.IsMentor");
             if (ModelState.IsValid)
             {
+
                 var user = new ApplicationUser
                 {
                     UserName = Input.Email,
@@ -108,9 +134,6 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
                     Admin = false,
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
-                    //how do I make sure this is nullable aka optional?
-                    //how to convert to string, do I ToString it?
-                        //PhoneNumber = Input.PhoneNumber,
                     //decouple rest of account creation?
                     CountryId = Input.CountryId,
                     Gender = Input.Gender,
@@ -122,6 +145,10 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
                     LanguagePref = Input.LanguagePref,
                     Availability = Input.Availability,
                 };
+                if (Input.PhoneNumber != null)
+                {
+                    user.PhoneNumber = Input.PhoneNumber;
+                }
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
