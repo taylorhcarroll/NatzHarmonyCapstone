@@ -87,7 +87,9 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
             public string LastName { get; set; }
 
             public string Gender { get; set; }
-           
+
+            public DateTime DoB { get; set; }
+
             public string Pronouns { get; set; }
 
             public string PhoneNumber { get; set; }
@@ -116,6 +118,10 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             //populate my view options here
 
+            //genderOptions = 
+
+            //countryOptions = 
+
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -135,6 +141,7 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
                     //decouple rest of account creation?
+                    DoB = Input.DoB,
                     CountryId = Input.CountryId,
                     Gender = Input.Gender,
                     Pronouns = Input.Pronouns,

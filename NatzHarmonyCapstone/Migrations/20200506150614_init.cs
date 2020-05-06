@@ -78,6 +78,8 @@ namespace NatzHarmonyCapstone.Migrations
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     Gender = table.Column<string>(nullable: true),
+                    Pronouns = table.Column<string>(nullable: true),
+                    DoB = table.Column<DateTime>(nullable: true),
                     CountryId = table.Column<int>(nullable: true),
                     Mentor = table.Column<bool>(nullable: true),
                     Admin = table.Column<bool>(nullable: true),
@@ -317,8 +319,13 @@ namespace NatzHarmonyCapstone.Migrations
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Admin", "Availability", "AvatarUrl", "CountryId", "CountryPref", "FirstName", "Gender", "GenderPref", "LanguagePref", "LastName", "Mentor" },
-                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "f5117b3f-dd55-4b99-b002-14ab0858ad9c", "ApplicationUser", "admin@admin.com", false, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEFerkbiz5fgjopBnvRxm6KAmL/l9Qgr9q8IudPYbMkIZlO6TwlkxtxaRSo5fnCH4Qw==", "6155555555", false, "7f434309-a4d9-48e9-9ebb-8803db794577", false, "admin@admin.com", false, null, null, 1, false, "Admina", null, false, false, "Straytor", false });
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Admin", "Availability", "AvatarUrl", "CountryId", "CountryPref", "DoB", "FirstName", "Gender", "GenderPref", "LanguagePref", "LastName", "Mentor", "Pronouns" },
+                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "8ab2889f-bde4-47be-bf2d-3b15cb03ef5e", "ApplicationUser", "admin@admin.com", false, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEPuvj6ltftxPllrwb0Mp9mc2mxx7giuvZmWvHhaX6UbNClv70L2syK8OY7Wmg3EQtg==", "6155555555", false, "7f434309-a4d9-48e9-9ebb-8803db794577", false, "admin@admin.com", false, null, null, 1, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admina", null, false, false, "Straytor", false, null });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Admin", "Availability", "AvatarUrl", "CountryId", "CountryPref", "DoB", "FirstName", "Gender", "GenderPref", "LanguagePref", "LastName", "Mentor", "Pronouns" },
+                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffaa", 0, "ad337bfa-e61e-4a91-9be2-7208484ba52c", "ApplicationUser", "tirrc@admin.com", false, false, null, "TIRRC@ADMIN.COM", "TIRRC@ADMIN.COM", null, "6155555556", false, "7f434309-a4d9-48e9-9ebb-8803db794578", false, "tirrc@admin.com", true, null, null, 1, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "TIRRC", null, false, false, "Admin", false, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

@@ -441,6 +441,9 @@ namespace NatzHarmonyCapstone.Migrations
                     b.Property<bool>("CountryPref")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("DoB")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -473,13 +476,13 @@ namespace NatzHarmonyCapstone.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3b4c30c2-909b-45ba-81ff-18dc743d08ab",
+                            ConcurrencyStamp = "8ab2889f-bde4-47be-bf2d-3b15cb03ef5e",
                             Email = "admin@admin.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEL0it1bqb7QgS9q8zYuGsc0/ADmeOwQ5tUt4TmDCHRzu/EBfLzMQX7KdNc5BzaVjw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPuvj6ltftxPllrwb0Mp9mc2mxx7giuvZmWvHhaX6UbNClv70L2syK8OY7Wmg3EQtg==",
                             PhoneNumber = "6155555555",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
@@ -488,10 +491,36 @@ namespace NatzHarmonyCapstone.Migrations
                             Admin = false,
                             CountryId = 1,
                             CountryPref = false,
+                            DoB = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Admina",
                             GenderPref = false,
                             LanguagePref = false,
                             LastName = "Straytor",
+                            Mentor = false
+                        },
+                        new
+                        {
+                            Id = "00000000-ffff-ffff-ffff-ffffffffffaa",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "ad337bfa-e61e-4a91-9be2-7208484ba52c",
+                            Email = "tirrc@admin.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "TIRRC@ADMIN.COM",
+                            NormalizedUserName = "TIRRC@ADMIN.COM",
+                            PhoneNumber = "6155555556",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794578",
+                            TwoFactorEnabled = false,
+                            UserName = "tirrc@admin.com",
+                            Admin = true,
+                            CountryId = 1,
+                            CountryPref = false,
+                            DoB = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "TIRRC",
+                            GenderPref = false,
+                            LanguagePref = false,
+                            LastName = "Admin",
                             Mentor = false
                         });
                 });

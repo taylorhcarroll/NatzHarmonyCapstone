@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
@@ -19,6 +20,8 @@ namespace NatzHarmonyCapstone.Models
         public string Gender { get; set; }
 
         public string Pronouns { get; set; }
+
+        public DateTime DoB { get; set; }
 
         public int CountryId { get; set; }
 
