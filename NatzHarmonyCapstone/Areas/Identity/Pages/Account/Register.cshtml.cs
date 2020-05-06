@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
 using NatzHarmonyCapstone.Data;
@@ -88,6 +89,7 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
 
             public string Gender { get; set; }
 
+            [DataType(DataType.Date)]
             public DateTime DoB { get; set; }
 
             public string Pronouns { get; set; }
@@ -118,10 +120,23 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             //populate my view options here
 
-            //genderOptions = 
+            //hardcode
+            var genderOptions = new List<SelectListItem>
+            {
+            new SelectListItem() { Text = "Male", Value = "Male"},
+            new SelectListItem() { Text = "Female", Value = "Female"},
+            new SelectListItem() { Text = "Non-Binary", Value = "Non-Binary"},
+            new SelectListItem() { Text = "Other", Value = "Other"}
+            };
 
-            //countryOptions = 
+            //one2many
+            var countryOptions = await _context.Country
+                .Select(c => new SelectListItem() { Text = c.Name, Value = c.CountryId.ToString() })
+                .ToListAsync();
 
+            //many2many
+            var languageOptions = await _context.Language.Select(l => new SelectListItem()
+            { Text = l.Name, Value = l.LanguageId.ToString() }).ToListAsync();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)

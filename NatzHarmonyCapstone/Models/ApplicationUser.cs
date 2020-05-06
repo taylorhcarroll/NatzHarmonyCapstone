@@ -21,6 +21,7 @@ namespace NatzHarmonyCapstone.Models
 
         public string Pronouns { get; set; }
 
+        [DataType(DataType.Date)]
         public DateTime DoB { get; set; }
 
         public int CountryId { get; set; }

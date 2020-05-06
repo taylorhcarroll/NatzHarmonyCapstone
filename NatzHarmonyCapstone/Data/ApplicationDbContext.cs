@@ -185,5 +185,7 @@ namespace NatzHarmonyCapstone.Data
 
 
         }
+
+        public DbSet<NatzHarmonyCapstone.Models.ProfileFormViewModel> ProfileFormViewModel { get; set; }
     }
 }

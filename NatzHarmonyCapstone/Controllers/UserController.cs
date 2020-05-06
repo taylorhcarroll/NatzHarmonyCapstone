@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using NatzHarmonyCapstone.Data;
 using NatzHarmonyCapstone.Models;
 
 namespace NatzHarmonyCapstone.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -28,9 +31,52 @@ namespace NatzHarmonyCapstone.Controllers
         }
 
         // GET: User/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            var userId = id.ToString();
+            var user = await _userManager.FindByIdAsync(userId);
+            var viewModel = new ProfileFormViewModel
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Gender = user.Gender,
+                Pronouns = user.Pronouns,
+                //CountryId = user.CountryId,
+                Country = user.Country,
+                Mentor = user.Mentor,
+                Admin = user.Admin,
+                LanguagePref = user.LanguagePref,
+                CountryPref = user.CountryPref,
+                GenderPref = user.GenderPref,
+                Availability = user.Availability,
+                AvatarUrl = user.AvatarUrl
+            };
+            return View(viewModel);
+        }
+
+        // GET: User/Details/MyProfile
+        public async Task<ActionResult> MyProfile()
+        {
+            var user = await GetCurrentUserAsync();
+            var viewModel = new ProfileFormViewModel
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Gender = user.Gender,
+                Pronouns = user.Pronouns,
+                //CountryId = user.CountryId,
+                Country = user.Country,
+                Mentor = user.Mentor,
+                Admin = user.Admin,
+                LanguagePref = user.LanguagePref,
+                CountryPref = user.CountryPref,
+                GenderPref = user.GenderPref,
+                Availability = user.Availability,
+                AvatarUrl = user.AvatarUrl
+            };
+            return View(viewModel);
         }
 
         // GET: User/Create
@@ -57,7 +103,7 @@ namespace NatzHarmonyCapstone.Controllers
         }
 
         // GET: Profiles/Edit/5
-        public async Task<ActionResult> Edit(int id)
+        public async Task<ActionResult> Edit()
         {
             var user = await GetCurrentUserAsync();
             var viewModel = new ProfileFormViewModel
