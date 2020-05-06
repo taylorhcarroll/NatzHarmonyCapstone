@@ -53,8 +53,8 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Input.Gender"></label>
-                    <input asp-for="Input.Gender" class="form-control" />
-                    <span asp-validation-for="Input.Gender" class="text-danger"></span>
+                    <select asp-for="Input.Gender" class="form-control" asp-items="@Model.GenderOptions"></select>
+                    @*<span asp-validation-for="Input.Gender" class="text-danger"></span>*@
                 </div>
                 <div class="form-group">
                     <label asp-for="Input.Pronouns"></label>
@@ -66,8 +66,7 @@
                 @*when calling the options, don't use Input. just call it'*@
                 <div class="form-group">
                     <label asp-for="Input.CountryId"></label>
-                    <input asp-for="Input.CountryId" class="form-control" />
-                    <span asp-validation-for="Input.CountryId" class="text-danger"></span>
+                    <select asp-for="Input.CountryId" class="form-control" asp-items="@Model.CountryOptions"></select>
                 </div>
                 <div class="form-group">
                     <label asp-for="Input.Languages"></label>

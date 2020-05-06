@@ -129,10 +129,14 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
             new SelectListItem() { Text = "Other", Value = "Other"}
             };
 
+            genderOptions = GenderOptions;
+
             //one2many
             var countryOptions = await _context.Country
                 .Select(c => new SelectListItem() { Text = c.Name, Value = c.CountryId.ToString() })
                 .ToListAsync();
+
+            countryOptions = CountryOptions;
 
             //many2many
             var languageOptions = await _context.Language.Select(l => new SelectListItem()
