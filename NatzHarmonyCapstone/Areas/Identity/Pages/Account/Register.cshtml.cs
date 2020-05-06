@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.Extensions.Logging;
 using NatzHarmonyCapstone.Data;
 using NatzHarmonyCapstone.Models;
@@ -99,6 +100,8 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
             public int CountryId { get; set; }
             
             public virtual List<Language> Languages { get; set; }
+
+            public List<int> SelectLangIds { get; set; }
            
             public bool LanguagePref { get; set; }
 
@@ -118,8 +121,10 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            
+            
             //populate my view options here
-
+            
             //hardcode
             var genderOptions = new List<SelectListItem>
             {
@@ -129,18 +134,26 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
             new SelectListItem() { Text = "Other", Value = "Other"}
             };
 
-            genderOptions = GenderOptions;
-
             //one2many
             var countryOptions = await _context.Country
                 .Select(c => new SelectListItem() { Text = c.Name, Value = c.CountryId.ToString() })
                 .ToListAsync();
 
-            countryOptions = CountryOptions;
 
             //many2many
             var languageOptions = await _context.Language.Select(l => new SelectListItem()
             { Text = l.Name, Value = l.LanguageId.ToString() }).ToListAsync();
+
+            //var viewModel = new Model
+            //{
+            
+            GenderOptions = genderOptions;
+            CountryOptions = countryOptions;
+            LanguageOptions = languageOptions;
+
+            //};
+
+            
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -175,6 +188,13 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
                 {
                     user.PhoneNumber = Input.PhoneNumber;
                 }
+
+                user.Languages = Input.SelectLangIds.Select(langId => new UserLanguage()
+                {
+                    
+                    UserId = user.Id,
+                    LanguageId = langId
+                }).ToList();
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)

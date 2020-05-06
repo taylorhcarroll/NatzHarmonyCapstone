@@ -19,6 +19,16 @@
             <div class="tab" id="Section2">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
+                    <label asp-for="Input.FirstName"></label>
+                    <input asp-for="Input.FirstName" class="form-control" />
+                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.LastName"></label>
+                    <input asp-for="Input.LastName" class="form-control" />
+                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
                     <label asp-for="Input.Email"></label>
                     <input asp-for="Input.Email" class="form-control" />
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
@@ -63,15 +73,14 @@
                 </div>
             </div>
             <div class="tab" id="Section4">
-                @*when calling the options, don't use Input. just call it'*@
+               
                 <div class="form-group">
                     <label asp-for="Input.CountryId"></label>
                     <select asp-for="Input.CountryId" class="form-control" asp-items="@Model.CountryOptions"></select>
                 </div>
                 <div class="form-group">
                     <label asp-for="Input.Languages"></label>
-                    <input asp-for="Input.Languages" class="form-control" />
-                    <span asp-validation-for="Input.Languages" class="text-danger"></span>
+                    <select asp-for="Input.SelectLangIds" class="form-control" asp-items="@Model.LanguageOptions"></select>
                 </div>
             </div>
             <div class="tab" id="Section5">

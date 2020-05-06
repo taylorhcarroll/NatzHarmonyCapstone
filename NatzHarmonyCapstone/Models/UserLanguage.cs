@@ -8,6 +8,8 @@ namespace NatzHarmonyCapstone.Models
     public class UserLanguage
     {
         public int UserLanguageId { get; set; }
+        
+        public string UserId { get; set; } 
 
         public ApplicationUser ApplicationUser { get; set; }
 
@@ -15,6 +17,5 @@ namespace NatzHarmonyCapstone.Models
 
         public Language Language { get; set; }
 
-        public int UserId { get; set; } 
     }
 }

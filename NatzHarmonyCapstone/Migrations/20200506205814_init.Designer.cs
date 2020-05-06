@@ -10,7 +10,7 @@ using NatzHarmonyCapstone.Data;
 namespace NatzHarmonyCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200506150614_init")]
+    [Migration("20200506205814_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -261,15 +261,10 @@ namespace NatzHarmonyCapstone.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("LanguageId");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Language");
 
@@ -390,8 +385,8 @@ namespace NatzHarmonyCapstone.Migrations
                     b.Property<int>("LanguageId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserLanguageId");
 
@@ -478,13 +473,13 @@ namespace NatzHarmonyCapstone.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8ab2889f-bde4-47be-bf2d-3b15cb03ef5e",
+                            ConcurrencyStamp = "2408db7a-c3a8-473c-84e7-7b6fb1c0a47b",
                             Email = "admin@admin.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPuvj6ltftxPllrwb0Mp9mc2mxx7giuvZmWvHhaX6UbNClv70L2syK8OY7Wmg3EQtg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAgToM0v/mlUXbI7W9fbAYOUi5sBeeajxXfeYT9fv5u+JjpI7YD4PPWAbQ9p4s1SdA==",
                             PhoneNumber = "6155555555",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
@@ -504,7 +499,7 @@ namespace NatzHarmonyCapstone.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffaa",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ad337bfa-e61e-4a91-9be2-7208484ba52c",
+                            ConcurrencyStamp = "1efbbd96-c776-4f47-94ca-d7f2881d2da9",
                             Email = "tirrc@admin.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -578,13 +573,6 @@ namespace NatzHarmonyCapstone.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("NatzHarmonyCapstone.Models.Language", b =>
-                {
-                    b.HasOne("NatzHarmonyCapstone.Models.ApplicationUser", null)
-                        .WithMany("Languages")
-                        .HasForeignKey("ApplicationUserId");
-                });
-
             modelBuilder.Entity("NatzHarmonyCapstone.Models.Messages", b =>
                 {
                     b.HasOne("NatzHarmonyCapstone.Models.ApplicationUser", "Recipient")
@@ -601,7 +589,7 @@ namespace NatzHarmonyCapstone.Migrations
             modelBuilder.Entity("NatzHarmonyCapstone.Models.UserLanguage", b =>
                 {
                     b.HasOne("NatzHarmonyCapstone.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
+                        .WithMany("Languages")
                         .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("NatzHarmonyCapstone.Models.Language", "Language")

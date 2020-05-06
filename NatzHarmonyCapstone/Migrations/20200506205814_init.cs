@@ -35,6 +35,19 @@ namespace NatzHarmonyCapstone.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Language",
+                columns: table => new
+                {
+                    LanguageId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Language", x => x.LanguageId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -186,26 +199,6 @@ namespace NatzHarmonyCapstone.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Language",
-                columns: table => new
-                {
-                    LanguageId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
-                    ApplicationUserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Language", x => x.LanguageId);
-                    table.ForeignKey(
-                        name: "FK_Language_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Messages",
                 columns: table => new
                 {
@@ -235,6 +228,33 @@ namespace NatzHarmonyCapstone.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserLanguage",
+                columns: table => new
+                {
+                    UserLanguageId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(nullable: true),
+                    ApplicationUserId = table.Column<string>(nullable: true),
+                    LanguageId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserLanguage", x => x.UserLanguageId);
+                    table.ForeignKey(
+                        name: "FK_UserLanguage_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserLanguage_Language_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "Language",
+                        principalColumn: "LanguageId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserMentor",
                 columns: table => new
                 {
@@ -260,33 +280,6 @@ namespace NatzHarmonyCapstone.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "UserLanguage",
-                columns: table => new
-                {
-                    UserLanguageId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApplicationUserId = table.Column<string>(nullable: true),
-                    LanguageId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserLanguage", x => x.UserLanguageId);
-                    table.ForeignKey(
-                        name: "FK_UserLanguage_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_UserLanguage_Language_LanguageId",
-                        column: x => x.LanguageId,
-                        principalTable: "Language",
-                        principalColumn: "LanguageId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "Country",
                 columns: new[] { "CountryId", "Name" },
@@ -298,34 +291,34 @@ namespace NatzHarmonyCapstone.Migrations
 
             migrationBuilder.InsertData(
                 table: "Language",
-                columns: new[] { "LanguageId", "ApplicationUserId", "Name" },
+                columns: new[] { "LanguageId", "Name" },
                 values: new object[,]
                 {
-                    { 1, null, "Spanish" },
-                    { 2, null, "Chinese" },
-                    { 3, null, "Tagalog" },
-                    { 4, null, "Vietnamese" },
-                    { 5, null, "Arabic" },
-                    { 6, null, "French" },
-                    { 7, null, "Korean" },
-                    { 8, null, "Russian" },
-                    { 9, null, "German" },
-                    { 10, null, "Haitian Creole" },
-                    { 11, null, "Portuguese" },
-                    { 12, null, "Italian" },
-                    { 13, null, "Polish" },
-                    { 14, null, "Hindi" }
+                    { 1, "Spanish" },
+                    { 2, "Chinese" },
+                    { 3, "Tagalog" },
+                    { 4, "Vietnamese" },
+                    { 5, "Arabic" },
+                    { 6, "French" },
+                    { 7, "Korean" },
+                    { 8, "Russian" },
+                    { 9, "German" },
+                    { 10, "Haitian Creole" },
+                    { 11, "Portuguese" },
+                    { 12, "Italian" },
+                    { 13, "Polish" },
+                    { 14, "Hindi" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Admin", "Availability", "AvatarUrl", "CountryId", "CountryPref", "DoB", "FirstName", "Gender", "GenderPref", "LanguagePref", "LastName", "Mentor", "Pronouns" },
-                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "8ab2889f-bde4-47be-bf2d-3b15cb03ef5e", "ApplicationUser", "admin@admin.com", false, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEPuvj6ltftxPllrwb0Mp9mc2mxx7giuvZmWvHhaX6UbNClv70L2syK8OY7Wmg3EQtg==", "6155555555", false, "7f434309-a4d9-48e9-9ebb-8803db794577", false, "admin@admin.com", false, null, null, 1, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admina", null, false, false, "Straytor", false, null });
+                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "2408db7a-c3a8-473c-84e7-7b6fb1c0a47b", "ApplicationUser", "admin@admin.com", false, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEAgToM0v/mlUXbI7W9fbAYOUi5sBeeajxXfeYT9fv5u+JjpI7YD4PPWAbQ9p4s1SdA==", "6155555555", false, "7f434309-a4d9-48e9-9ebb-8803db794577", false, "admin@admin.com", false, null, null, 1, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admina", null, false, false, "Straytor", false, null });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Admin", "Availability", "AvatarUrl", "CountryId", "CountryPref", "DoB", "FirstName", "Gender", "GenderPref", "LanguagePref", "LastName", "Mentor", "Pronouns" },
-                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffaa", 0, "ad337bfa-e61e-4a91-9be2-7208484ba52c", "ApplicationUser", "tirrc@admin.com", false, false, null, "TIRRC@ADMIN.COM", "TIRRC@ADMIN.COM", null, "6155555556", false, "7f434309-a4d9-48e9-9ebb-8803db794578", false, "tirrc@admin.com", true, null, null, 1, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "TIRRC", null, false, false, "Admin", false, null });
+                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffaa", 0, "1efbbd96-c776-4f47-94ca-d7f2881d2da9", "ApplicationUser", "tirrc@admin.com", false, false, null, "TIRRC@ADMIN.COM", "TIRRC@ADMIN.COM", null, "6155555556", false, "7f434309-a4d9-48e9-9ebb-8803db794578", false, "tirrc@admin.com", true, null, null, 1, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "TIRRC", null, false, false, "Admin", false, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -370,11 +363,6 @@ namespace NatzHarmonyCapstone.Migrations
                 name: "IX_AspNetUsers_CountryId",
                 table: "AspNetUsers",
                 column: "CountryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Language_ApplicationUserId",
-                table: "Language",
-                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Messages_RecipientId",

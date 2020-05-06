@@ -45,7 +45,8 @@ namespace NatzHarmonyCapstone.Models
 
         public virtual List<UserMentor> UserMentees { get; set; }
 
-        public virtual List<Language> Languages { get; set; }
+        //change was made from list of languages to UserLanguages due to this being many2many
+        public virtual List<UserLanguage> Languages { get; set; }
 
         public virtual List<Messages> SentMessages { get; set; }
 
