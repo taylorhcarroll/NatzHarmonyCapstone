@@ -104,8 +104,7 @@
             <div class="tab" id="Section6">
                 <div class="form-group">
                     <label asp-for="Input.Availability"></label>
-                    <input asp-for="Input.Availability" class="form-control" />
-                    <span asp-validation-for="Input.Availability" class="text-danger"></span>
+                    <select asp-for="Input.Availability" class="form-control" asp-items="@Model.AvailabilityOptions"></select>
                 </div>
             </div>
 

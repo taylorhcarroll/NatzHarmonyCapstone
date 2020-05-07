@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using NatzHarmonyCapstone.Data;
 using NatzHarmonyCapstone.Models;
@@ -19,19 +22,49 @@ namespace NatzHarmonyCapstone.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
+        
         public UserController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
+
+        /////////section for raw SQL cmd config BEGIN
+        //private readonly IConfiguration _config;
+
+        //public UserController(IConfiguration config)
+        //{
+        //    _config = config;
+        //}
+
+        //public SqlConnection Connection
+        //{
+        //    get
+        //    {
+        //        return new SqlConnection(_config.GetConnectionString("DefaultConnection"));
+        //    }
+        //}
+        /////////section for raw SQL cmd config END
+
         // GET: User
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: User/Details/5
-        public async Task<ActionResult> Details(int id)
+        //public async Task<ActionResult> MyMatches()
+        //{
+        //    var user = GetCurrentUserAsync();
+        //    var matches = await _context.Users
+        //        .Where(u => u).ToListAsync();
+        //        //get me all users
+        //        //get a count based on if matching criteria
+        //        //then sort desc on the count
+        //        //give the top 3
+        //        //else sort by alphabetical
+        //}
+            // GET: User/Details/5
+            public async Task<ActionResult> Details(int id)
         {
             var userId = id.ToString();
             var user = await _userManager.FindByIdAsync(userId);
@@ -203,5 +236,75 @@ namespace NatzHarmonyCapstone.Controllers
             }
         }
         private async Task<ApplicationUser> GetCurrentUserAsync() => await _userManager.GetUserAsync(HttpContext.User);
+
+
+        public Task<ActionResult> MatchEngine(ApplicationUser user)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT TOP 3 u.Id, u.FirstName, u.LastName, u.Mentor, u.Gender, u.CountryId, u.[Availability],
+                                        ul.LanguageId, l.[Name],
+                                        COUNT(CASE WHEN ul.LanguageId = 1 THEN 1 END)
+                                       
+                                         AS CriteriaRank
+                                        FROM AspNetUsers u
+                                        LEFT JOIN UserLanguage ul ON ul.UserId = u.Id
+                                        LEFT JOIN[Language] l ON l.LanguageId = ul.LanguageId
+                                        GROUP BY u.Id, u.FirstName, u.LastName, u.Mentor, u.Gender, u.CountryId, u.[Availability], ul.LanguageId, l.[Name]
+                                        ORDER BY CriteriaRank DESC";
+                    if (user.GenderPref == false && user.CountryPref == false && user.LanguagePref == false)
+                    {
+                        cmd.CommandText = @"SELECT TOP 3 u.Id, u.FirstName, u.LastName, u.Mentor, u.Gender, u.CountryId, u.[Availability],
+                                            ul.LanguageId, l.[Name]
+                                            FROM AspNetUsers u
+                                            LEFT JOIN UserLanguage ul ON ul.UserId = u.Id
+                                            LEFT JOIN [Language] l ON l.LanguageId = ul.LanguageId
+                                            GROUP BY u.Id, u.FirstName, u.LastName, u.Mentor, u.Gender, u.CountryId, u.[Availability], ul.LanguageId, l.[Name]
+                                            ORDER BY u.LastName DESC";
+                    }
+                    else
+                    {
+
+                        if (user.GenderPref == true)
+                        {
+                            cmd.CommandText += " + COUNT(CASE WHEN u.Gender = '@Gender' THEN 1 END) ";
+                            cmd.Parameters.Add(new SqlParameter("@Gender", user.Gender));
+                        }
+
+                        if (user.CountryPref == true)
+                        {
+                            cmd.CommandText += "  + COUNT(CASE WHEN u.CountryId = @Country THEN 1 END) ";
+                            cmd.Parameters.Add(new SqlParameter("@Country", user.CountryId));
+                        }
+
+                        if (user.LanguagePref == true)
+                        {
+                            foreach (UserLanguage lang in user.Languages)
+                            {
+                                cmd.CommandText += " + COUNT(CASE WHEN ul.LanguageId = @Lang THEN 1 END)  ";
+                                cmd.Parameters.Add(new SqlParameter("@Lang", lang ));
+                            }
+
+                        }
+                        
+                    }
+
+                }
+            }
+        }
     }
 }
+
+                    //cmd.CommandText = @"SELECT TOP 3 u.Id, u.FirstName, u.LastName, u.Mentor, u.Gender, u.CountryId, u.[Availability],
+//                                        ul.LanguageId, l.[Name],
+//                                        COUNT(CASE WHEN ul.LanguageId = 1 THEN 1 END)
+//                                        + COUNT(CASE WHEN u.CountryId = @Country THEN 1 END)
+//                                        + COUNT(CASE WHEN u.Gender = '@Gender' THEN 1 END) AS CriteriaRank
+//                                        FROM AspNetUsers u
+//                                        LEFT JOIN UserLanguage ul ON ul.UserId = u.Id
+//                                        LEFT JOIN[Language] l ON l.LanguageId = ul.LanguageId
+//                                        GROUP BY u.Id, u.FirstName, u.LastName, u.Mentor, u.Gender, u.CountryId, u.[Availability], ul.LanguageId, l.[Name]
+//                                        ORDER BY CriteriaRank DESC";

@@ -104,11 +104,14 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
             public virtual List<Language> Languages { get; set; }
 
             public List<int> SelectLangIds { get; set; }
-           
-            public bool LanguagePref { get; set; }
 
+            [Display(Name = "Do you prefer your mentor speak the same native languag as you?")]
+            public bool LanguagePref { get; set; }
+            
+            [Display(Name = "Do you prefer your mentor is from the same country as you?")]
             public bool CountryPref { get; set; }
 
+            [Display(Name = "Do you prefer your mentor have the same gender as you?")]
             public bool GenderPref { get; set; }
 
             public string Availability { get; set; }
@@ -136,6 +139,14 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
             new SelectListItem() { Text = "Other", Value = "Other"}
             };
 
+            var availabilityOptions = new List<SelectListItem>
+            {
+            new SelectListItem() { Text = "Mornings (7am-11am)", Value = "Mornings"},
+            new SelectListItem() { Text = "Midday (11am-4pm)", Value = "Midday"},
+            new SelectListItem() { Text = "Evenings (4pm-8pm)", Value = "Evenings"},
+            new SelectListItem() { Text = "No Preference", Value = "NoPreference"}
+            };
+
             //one2many
             var countryOptions = await _context.Country
                 .Select(c => new SelectListItem() { Text = c.Name, Value = c.CountryId.ToString() })
@@ -152,10 +163,11 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
             GenderOptions = genderOptions;
             CountryOptions = countryOptions;
             LanguageOptions = languageOptions;
+            AvailabilityOptions = availabilityOptions;
 
             //};
 
-            
+
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
