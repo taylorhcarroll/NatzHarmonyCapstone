@@ -21,30 +21,25 @@ namespace NatzHarmonyCapstone.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IConfiguration _config;
 
-        
-        public UserController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+
+        public UserController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IConfiguration config)
         {
             _context = context;
             _userManager = userManager;
+            _config = config;
         }
 
-        /////////section for raw SQL cmd config BEGIN
-        //private readonly IConfiguration _config;
-
-        //public UserController(IConfiguration config)
-        //{
-        //    _config = config;
-        //}
-
-        //public SqlConnection Connection
-        //{
-        //    get
-        //    {
-        //        return new SqlConnection(_config.GetConnectionString("DefaultConnection"));
-        //    }
-        //}
-        /////////section for raw SQL cmd config END
+        ///////section for raw SQL cmd config BEGIN
+        public SqlConnection Connection
+        {
+            get
+            {
+                return new SqlConnection(_config.GetConnectionString("DefaultConnection"));
+            }
+        }
+        ///////section for raw SQL cmd config END
 
         // GET: User
         public ActionResult Index()
@@ -63,8 +58,8 @@ namespace NatzHarmonyCapstone.Controllers
         //        //give the top 3
         //        //else sort by alphabetical
         //}
-            // GET: User/Details/5
-            public async Task<ActionResult> Details(int id)
+        // GET: User/Details/5
+        public async Task<ActionResult> Details(int id)
         {
             var userId = id.ToString();
             var user = await _userManager.FindByIdAsync(userId);
@@ -205,7 +200,7 @@ namespace NatzHarmonyCapstone.Controllers
                 _context.ApplicationUsers.Update(user);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("Details", new { id = user.Id});
+                return RedirectToAction("Details", new { id = user.Id });
             }
             catch
             {
@@ -238,23 +233,13 @@ namespace NatzHarmonyCapstone.Controllers
         private async Task<ApplicationUser> GetCurrentUserAsync() => await _userManager.GetUserAsync(HttpContext.User);
 
 
-        public Task<ActionResult> MatchEngine(ApplicationUser user)
+        private List<ApplicationUser> MatchEngine(ApplicationUser user)
         {
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT TOP 3 u.Id, u.FirstName, u.LastName, u.Mentor, u.Gender, u.CountryId, u.[Availability],
-                                        ul.LanguageId, l.[Name],
-                                        COUNT(CASE WHEN ul.LanguageId = 1 THEN 1 END)
-                                       
-                                         AS CriteriaRank
-                                        FROM AspNetUsers u
-                                        LEFT JOIN UserLanguage ul ON ul.UserId = u.Id
-                                        LEFT JOIN[Language] l ON l.LanguageId = ul.LanguageId
-                                        GROUP BY u.Id, u.FirstName, u.LastName, u.Mentor, u.Gender, u.CountryId, u.[Availability], ul.LanguageId, l.[Name]
-                                        ORDER BY CriteriaRank DESC";
                     if (user.GenderPref == false && user.CountryPref == false && user.LanguagePref == false)
                     {
                         cmd.CommandText = @"SELECT TOP 3 u.Id, u.FirstName, u.LastName, u.Mentor, u.Gender, u.CountryId, u.[Availability],
@@ -267,6 +252,16 @@ namespace NatzHarmonyCapstone.Controllers
                     }
                     else
                     {
+                        cmd.CommandText = @"SELECT TOP 3 u.Id, u.FirstName, u.LastName, u.Mentor, u.Gender, u.CountryId, u.[Availability],
+                                        ul.LanguageId, l.[Name],
+                                        COUNT(CASE WHEN ul.LanguageId = 1 THEN 1 END)
+                                       
+                                         AS CriteriaRank
+                                        FROM AspNetUsers u
+                                        LEFT JOIN UserLanguage ul ON ul.UserId = u.Id
+                                        LEFT JOIN[Language] l ON l.LanguageId = ul.LanguageId
+                                        GROUP BY u.Id, u.FirstName, u.LastName, u.Mentor, u.Gender, u.CountryId, u.[Availability], ul.LanguageId, l.[Name]
+                                        ORDER BY CriteriaRank DESC";
 
                         if (user.GenderPref == true)
                         {
@@ -285,13 +280,26 @@ namespace NatzHarmonyCapstone.Controllers
                             foreach (UserLanguage lang in user.Languages)
                             {
                                 cmd.CommandText += " + COUNT(CASE WHEN ul.LanguageId = @Lang THEN 1 END)  ";
-                                cmd.Parameters.Add(new SqlParameter("@Lang", lang ));
+                                cmd.Parameters.Add(new SqlParameter("@Lang", lang));
                             }
 
                         }
-                        
-                    }
 
+                    }
+                        var reader = cmd.ExecuteReader();
+                        var matches = new List<ApplicationUser>();
+
+                        while (reader.Read())
+                        {
+                            var match = new ApplicationUser()
+                            {
+                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                LastName = reader.GetString(reader.GetOrdinal("LastName"))
+                            };
+                            matches.Add(match);
+                        }
+                        reader.Close();
+                        return matches;
                 }
             }
         }
