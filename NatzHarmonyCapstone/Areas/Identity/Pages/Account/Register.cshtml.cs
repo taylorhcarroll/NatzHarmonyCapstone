@@ -118,7 +118,7 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
           
             public string AvatarUrl { get; set; }
 
-            [NotMapped]
+            //[NotMapped]
             public IFormFile File { get; set; }
         }
 
@@ -172,7 +172,8 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl = returnUrl ?? Url.Content("~/User/MyMatches");
+            //returnUrl = returnUrl ?? Url.Action("MyMatches", "User", new { variable = value })
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             ModelState.Remove("Input.IsMentor");
             if (ModelState.IsValid)
@@ -191,7 +192,6 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
                     CountryId = Input.CountryId,
                     Gender = Input.Gender,
                     Pronouns = Input.Pronouns,
-                    AvatarUrl = Input.AvatarUrl,
                     //pref section
                     CountryPref = Input.CountryPref,
                     GenderPref = Input.GenderPref,
@@ -237,24 +237,32 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    //var callbackUrl = Url.Page(
+                    //    "/User/MyMatches",
+                    //    pageHandler: null,
+                    //    values: new { userId = user.Id, code = code },
+                    //    protocol: Request.Scheme);
+
+
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
                         values: new { area = "Identity", userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email });
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
+
+                    //if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    //{
+                    //    return RedirectToPage("RegisterConfirmation", new { email = Input.Email });
+                    //}
+                    //else
+
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return LocalRedirect(returnUrl);
+                    
                 }
                 foreach (var error in result.Errors)
                 {

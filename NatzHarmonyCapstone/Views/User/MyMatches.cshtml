@@ -1,0 +1,55 @@
+﻿@model NatzHarmonyCapstone.Models.ViewModels.MatchViewModel
+
+@{
+    ViewData["Title"] = "MyMatches";
+}
+
+<h1>MyMatches</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+           
+            
+            <th>
+                @Html.DisplayNameFor(model => model.match.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.match.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.match.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.match.Pronouns)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.MatchList)
+        {
+            <tr>
+                <td>
+                    <img src="~/images/@item.AvatarUrl" style="max-height: 75px; max-width: 75px;" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Pronouns)
+                </td>
+                <td>
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
