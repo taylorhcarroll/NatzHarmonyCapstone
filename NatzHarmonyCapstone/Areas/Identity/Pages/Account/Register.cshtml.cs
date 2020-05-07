@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -91,6 +92,7 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
             public string Gender { get; set; }
 
             [DataType(DataType.Date)]
+            [Display(Name = "Date of Birth")]
             public DateTime DoB { get; set; }
 
             public string Pronouns { get; set; }
@@ -195,6 +197,26 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
                     UserId = user.Id,
                     LanguageId = langId
                 }).ToList();
+
+                if (Input.File != null && Input.File.Length > 0)
+                {
+                    //creates the file name and makes it unique by generating a Guid and adding that to the file name
+                    var fileName = Guid.NewGuid().ToString() + Path.GetFileName(Input.File.FileName);
+                    //defines the filepath by adding the fileName above and combines it with the wwwroot directory 
+                    //which is where our images are stored
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileName);
+
+                    //adds the newly created fileName to the product object we built up above to be stored in 
+                    //the database as the ImagePath
+                    user.AvatarUrl = fileName;
+
+                    //what actually allows us to save the file to the folder path
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await Input.File.CopyToAsync(stream);
+                    }
+
+                }
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
