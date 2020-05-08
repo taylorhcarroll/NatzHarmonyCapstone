@@ -118,7 +118,7 @@ namespace NatzHarmonyCapstone.Controllers
         }
 
         // GET: User/Create
-        public ActionResult Create()
+        public ActionResult AddMentor(int id)
         {
             return View();
         }
@@ -284,10 +284,15 @@ namespace NatzHarmonyCapstone.Controllers
 
                         if (user.LanguagePref == true)
                         {
-                            foreach (UserLanguage lang in user.Languages)
+
+                            //foreach (UserLanguage lang in user.Languages)
+                            var paramz = new string[user.Languages.Count]; 
+                            for (int i = 0; i < user.Languages.Count; i++)
                             {
-                                cmd.CommandText += " + COUNT(CASE WHEN ul.LanguageId = @Lang THEN 1 END)  ";
-                                cmd.Parameters.Add(new SqlParameter("@Lang", lang.Language.LanguageId));
+                                paramz[i] = string.Format("@{0}{1}", "Lang", i);
+                                cmd.Parameters.AddWithValue(paramz[i], user.Languages[i]);
+                                cmd.CommandText += " + COUNT(CASE WHEN ul.LanguageId = @Lang({0}) THEN 1 END)  ";
+                                cmd.Parameters.Add(new SqlParameter("@Lang", user.Languages[i].Language.LanguageId));
                             }
 
                         }
