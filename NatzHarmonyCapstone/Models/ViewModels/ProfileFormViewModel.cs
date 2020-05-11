@@ -45,5 +45,9 @@ namespace NatzHarmonyCapstone.Models
         [NotMappedAttribute]
         public IFormFile File { get; set; }
 
+        public string ReturnAction { get; set; }
+
+        public string ReturnController { get; set; }
+
     }
 }

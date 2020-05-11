@@ -59,9 +59,14 @@ namespace NatzHarmonyCapstone.Controllers
 
             var matches = MatchEngine(user);
 
+            var returnAction = "MyMatches";
+            var ReturnController = "User";
+
             var viewModel = new MatchViewModel
             {
-                MatchList = matches
+                MatchList = matches,
+                ReturnAction = returnAction,
+                ReturnController = ReturnController
             };
 
             return View(viewModel);
@@ -69,7 +74,7 @@ namespace NatzHarmonyCapstone.Controllers
         }
 
         // GET: User/Details/5
-        public async Task<ActionResult> Details(string id)
+        public async Task<ActionResult> Details(string id, string returnAction, string returnController)
         {
             var user = await _userManager.FindByIdAsync(id);
             //(u => u.Id == id);
@@ -89,7 +94,9 @@ namespace NatzHarmonyCapstone.Controllers
                 CountryPref = user.CountryPref,
                 GenderPref = user.GenderPref,
                 Availability = user.Availability,
-                AvatarUrl = user.AvatarUrl
+                AvatarUrl = user.AvatarUrl,
+                ReturnController = returnController,
+                ReturnAction = returnAction
             };
             return View(viewModel);
         }
@@ -119,10 +126,23 @@ namespace NatzHarmonyCapstone.Controllers
         }
 
         // GET: User/Create
-        public ActionResult AddMentor(int id)
+        public async Task<ActionResult> AddMentor(string id)
         {
 
-            return View();
+            var user = await GetCurrentUserAsync();
+            var mentorId = id;
+
+            var userMentor = new UserMentor()
+            {
+                MentorId = mentorId,
+                UserId = user.Id
+            };
+
+            _context.UserMentor.Add(userMentor);
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToAction("Index", "Messages", new { id = userMentor.MentorId });
         }
 
         // POST: User/Create

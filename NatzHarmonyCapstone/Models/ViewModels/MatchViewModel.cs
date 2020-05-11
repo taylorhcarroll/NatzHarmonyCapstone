@@ -10,5 +10,8 @@ namespace NatzHarmonyCapstone.Models.ViewModels
        public List<ApplicationUser> MatchList { get; set; }
 
        public ApplicationUser match { get; set; }
+
+       public string ReturnAction { get; set; } 
+       public string ReturnController { get; set; }
     }
 }
