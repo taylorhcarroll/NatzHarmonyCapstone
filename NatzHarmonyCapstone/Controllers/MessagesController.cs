@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using NatzHarmonyCapstone.Data;
 using NatzHarmonyCapstone.Models;
+using NatzHarmonyCapstone.Models.ViewModels;
 
 namespace NatzHarmonyCapstone.Controllers
 {
@@ -28,8 +30,31 @@ namespace NatzHarmonyCapstone.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await GetCurrentUserAsync();
-            var applicationDbContext = _context.Messages.Include(m => m.Recipient).Include(m => m.Sender);
-            return View(await applicationDbContext.ToListAsync());
+
+
+            var messageData = _context.Messages.Include(m => m.Recipient).Include(m => m.Sender);
+            
+            
+
+            //if (messageData == null)
+            //{
+            //    var messages = new List<Message>()
+            //    {
+                    
+            //    };
+            //}
+
+            var messagesView = new MessagesViewList();
+            messagesView.UserId = user.Id;
+            messagesView.Matches = _context.UserMentor.Where(um => um.UserId == user.Id)
+                .Select(m => new ApplicationUser
+                {
+                    FirstName = m.Mentor.FirstName,
+                    LastName = m.Mentor.LastName
+                });
+           
+
+            return View(messagesView);
         }
 
         // GET: Messages/Help

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NatzHarmonyCapstone.Models;
+using NatzHarmonyCapstone.Models.ViewModels;
 
 namespace NatzHarmonyCapstone.Data
 {
@@ -186,6 +187,5 @@ namespace NatzHarmonyCapstone.Data
 
         }
 
-        public DbSet<NatzHarmonyCapstone.Models.ProfileFormViewModel> ProfileFormViewModel { get; set; }
     }
 }

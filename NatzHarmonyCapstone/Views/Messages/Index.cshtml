@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NatzHarmonyCapstone.Models.Messages>
+﻿@model NatzHarmonyCapstone.Models.ViewModels.MessagesViewList
 
 @{
     ViewData["Title"] = "Index";
@@ -10,10 +10,10 @@
     <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
-    <thead>
+    @*<thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Sender)
+                @Html.DisplayNameFor(model => model)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Recipient)
@@ -29,31 +29,35 @@
             </th>
             <th></th>
         </tr>
-    </thead>
+    </thead>*@
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model.Matches)
+        {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Sender.Id)
+                @Html.DisplayFor(modelItem => item.FirstName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Recipient.Id)
+                @Html.DisplayFor(modelItem => item.LastName)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TimeStamp)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsRead)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MessagesId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MessagesId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MessagesId">Delete</a>
-            </td>
+            @*<td>
+            @Html.DisplayFor(modelItem => item.Recipient.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Content)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TimeStamp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsRead)
+        </td>
+        <td>
+            <a asp-action="Edit" asp-route-id="@item.MessagesId">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.MessagesId">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.MessagesId">Delete</a>
+        </td>*@
         </tr>
-}
+        }
     </tbody>
 </table>
