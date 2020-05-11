@@ -46,9 +46,9 @@
                     @Html.DisplayFor(modelItem => item.Pronouns)
                 </td>
                 <td>
-                    <a asp-action="Details" name="id" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-outline-secondary" asp-action="Details" name="id"  asp-route-id="@item.Id">Details</a>
 
-                    <a asp-action="AddMentor" name="id" asp-route-id="@item.Id">Add Mentor</a>
+                    <a class="btn btn-primary" asp-action="AddMentor" name="id" asp-route-id="@item.Id">Add Mentor</a>
 
                 </td>
             </tr>

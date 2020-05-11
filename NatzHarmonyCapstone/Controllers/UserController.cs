@@ -69,10 +69,11 @@ namespace NatzHarmonyCapstone.Controllers
         }
 
         // GET: User/Details/5
-        public async Task<ActionResult> Details(int id)
+        public async Task<ActionResult> Details(string id)
         {
-            var userId = id.ToString();
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(id);
+            //(u => u.Id == id);
+
             var viewModel = new ProfileFormViewModel
             {
                 Id = user.Id,
@@ -80,7 +81,7 @@ namespace NatzHarmonyCapstone.Controllers
                 LastName = user.LastName,
                 Gender = user.Gender,
                 Pronouns = user.Pronouns,
-                //CountryId = user.CountryId,
+                CountryId = user.CountryId,
                 Country = user.Country,
                 Mentor = user.Mentor,
                 Admin = user.Admin,
@@ -104,7 +105,7 @@ namespace NatzHarmonyCapstone.Controllers
                 LastName = user.LastName,
                 Gender = user.Gender,
                 Pronouns = user.Pronouns,
-                //CountryId = user.CountryId,
+                CountryId = user.CountryId,
                 Country = user.Country,
                 Mentor = user.Mentor,
                 Admin = user.Admin,
@@ -120,6 +121,7 @@ namespace NatzHarmonyCapstone.Controllers
         // GET: User/Create
         public ActionResult AddMentor(int id)
         {
+
             return View();
         }
 

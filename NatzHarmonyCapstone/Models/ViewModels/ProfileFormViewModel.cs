@@ -24,7 +24,7 @@ namespace NatzHarmonyCapstone.Models
 
         public string Pronouns { get; set; }
 
-        //public int CountryId { get; set; }
+        public int CountryId { get; set; }
 
         public Country Country { get; set; }
 
