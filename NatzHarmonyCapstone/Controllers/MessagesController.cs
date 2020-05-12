@@ -55,7 +55,7 @@ namespace NatzHarmonyCapstone.Controllers
                 var conversationItem = new ConversationItem();
                 conversationItem.Match = mentor;
                 conversationItem.RecentMessage = lastMessage;
-                conversationItem.IsRead = false;
+                conversationItem.IsRead = lastMessage.IsRead;
 
                 messagesView.Add(conversationItem);
 
@@ -81,19 +81,41 @@ namespace NatzHarmonyCapstone.Controllers
                         .Where(m => m.SenderId == mentee.UserId || m.RecipientId == mentee.UserId)
                         .OrderByDescending(m => m.TimeStamp)
                         .FirstOrDefault();
-
-                    lastMessages.Add(lastMessage);
+                    if (lastMessage != null)
+                    {
+                        lastMessages.Add(lastMessage);
+                    }
+                    else
+                    {
+                        lastMessage = new Messages()
+                        {
+                            RecipientId = mentee.UserId,
+                            Recipient = mentee.User,
+                            Content = "This is a new match! You have not messaged this user yet."                            
+                        };
+                        lastMessages.Add(lastMessage);
+                    }
                     
                 }
 
+                var messagesView = new List<ConversationItem>();
+                var conversationItem = new ConversationItem();
+                foreach (var item in lastMessages)
+                {
+                    if (item.SenderId != user.Id)
+                    {
+                        conversationItem.Match = item.Sender;
+                    } else
+                    {
+                        conversationItem.Match = item.Recipient;
+                    }
+                conversationItem.RecentMessage = item;
+                conversationItem.IsRead = item.IsRead;
+                messagesView.Add(conversationItem);
+                }
 
+                return View(messagesView);
 
-
-
-
-
-
-                return View();
             }
 
 
