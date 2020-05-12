@@ -15,5 +15,7 @@ namespace NatzHarmonyCapstone.Models.ViewModels
         public IEnumerable<ApplicationUser> Matches { get; set; }
 
         public IEnumerable<Messages> Messages { get; set; }
+
+        public IEnumerable<ConversationItem> ConversationItems { get; set; }
     }
 }

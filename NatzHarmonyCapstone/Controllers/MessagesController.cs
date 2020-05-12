@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -32,29 +33,73 @@ namespace NatzHarmonyCapstone.Controllers
             var user = await GetCurrentUserAsync();
 
 
-            var messageData = _context.Messages.Include(m => m.Recipient).Include(m => m.Sender);
-            
-            
+            if (user.Mentor == false)
+            {
+                //defines mentee based on currently logged in user and 
+                //includes the mentor relationships
+                var mentee = _context.ApplicationUsers
+                    .Include(u => u.UserMentors)
+                        .ThenInclude(um => um.Mentor)
+                    .FirstOrDefault(u => user.Id == u.Id);
 
-            //if (messageData == null)
-            //{
-            //    var messages = new List<Message>()
-            //    {
-                    
-            //    };
-            //}
+                //sets mentor as a variable from data pulled from above
+                var mentor = mentee.UserMentors.FirstOrDefault().Mentor;
 
-            var messagesView = new MessagesViewList();
-            messagesView.UserId = user.Id;
-            messagesView.Matches = _context.UserMentor.Where(um => um.UserId == user.Id)
-                .Select(m => new ApplicationUser
+                var lastMessage = _context.Messages
+                    .Where(m => m.SenderId == mentee.Id || m.RecipientId == mentee.Id)
+                    .Where(m => m.SenderId == mentor.Id || m.RecipientId == mentor.Id)
+                    .OrderByDescending(m => m.TimeStamp)
+                    .FirstOrDefault();
+
+                var messagesView = new List<ConversationItem>();
+                var conversationItem = new ConversationItem();
+                conversationItem.Match = mentor;
+                conversationItem.RecentMessage = lastMessage;
+                conversationItem.IsRead = false;
+
+                messagesView.Add(conversationItem);
+
+                return View(messagesView);
+
+            } 
+            else
+            {
+                var mentor = _context.ApplicationUsers
+                    .Include(u => u.UserMentees)
+                        .ThenInclude(um => um.User)
+                    .FirstOrDefault(u => user.Id == u.Id);
+
+
+                var mentees = mentor.UserMentees.ToList();
+
+                var lastMessages = new List<Messages>();
+
+                foreach (var mentee in mentees)
                 {
-                    FirstName = m.Mentor.FirstName,
-                    LastName = m.Mentor.LastName
-                });
-           
+                    var lastMessage = _context.Messages
+                        .Where(m => m.SenderId == mentor.Id || m.RecipientId == mentor.Id)
+                        .Where(m => m.SenderId == mentee.UserId || m.RecipientId == mentee.UserId)
+                        .OrderByDescending(m => m.TimeStamp)
+                        .FirstOrDefault();
 
-            return View(messagesView);
+                    lastMessages.Add(lastMessage);
+                    
+                }
+
+
+
+
+
+
+
+
+                return View();
+            }
+
+
+
+
+
         }
 
         // GET: Messages/Help
@@ -90,6 +135,8 @@ namespace NatzHarmonyCapstone.Controllers
             {
                 return NotFound();
             }
+
+
 
             var messages = await _context.Messages
                 .Include(m => m.Recipient)

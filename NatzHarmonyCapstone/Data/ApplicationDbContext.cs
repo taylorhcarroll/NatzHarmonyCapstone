@@ -183,6 +183,16 @@ namespace NatzHarmonyCapstone.Data
                     Name = "Hindi"
                 }
                 );
+            //this line makes the Sample Message
+            modelBuilder.Entity<Messages>().HasData(
+                new Messages()
+                {
+                    MessagesId = 1,
+                    SenderId = "00000000-ffff-ffff-ffff-ffffffffffff",
+                    RecipientId = "e65db829-8ed8-433a-9e40-32bce7803339",
+                    TimeStamp = DateTime.Now,
+                    IsRead = false,
+                });
 
 
         }

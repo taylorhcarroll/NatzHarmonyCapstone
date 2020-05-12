@@ -35,10 +35,17 @@
         {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
+                @*@Html.DisplayFor(modelItem => item.FirstName)
+                @foreach (var message in Model.Messages)
+                {
+                    <td>
+
+                    </td>
+                }*@
+
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LastName)
+                @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
             </td>
             @*<td>
             @Html.DisplayFor(modelItem => item.Recipient.Id)
