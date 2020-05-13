@@ -37,8 +37,10 @@
                         @Html.DisplayFor(modelItem => item.Match.FirstName) @Html.DisplayFor(modelItem => item.Match.LastName)
                     </td>
                     <td>
-                       @if (@item.RecentMessage.SenderId == item.User.Id) {<p>You: </p>} 
-                        @Html.DisplayFor(modelItem => item.RecentMessage.Content)
+                        @if (@item.RecentMessage.SenderId == item.User.Id)
+                        {<p>You: @Html.DisplayFor(modelItem => item.RecentMessage.Content) </p>}
+                    else
+                    {<p>@Html.DisplayFor(modelItem => item.RecentMessage.Content)</p>}
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.RecentMessage.TimeStamp)
