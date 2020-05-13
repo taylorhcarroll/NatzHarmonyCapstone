@@ -168,6 +168,8 @@ namespace NatzHarmonyCapstone.Controllers
 
             var user = await GetCurrentUserAsync();
 
+            var match = await _context.ApplicationUsers.FirstOrDefaultAsync(m => m.Id == id);
+
             var messages = await _context.Messages
                             .Include(u => u.Sender)
                             .Where(m => m.SenderId == user.Id || m.RecipientId == user.Id)
@@ -183,7 +185,12 @@ namespace NatzHarmonyCapstone.Controllers
                 return NotFound();
             }
 
-            return View(messages);
+            var viewModel = new SingleConversation();
+            viewModel.Messages = messages;
+            viewModel.User = user;
+            viewModel.Match = match;
+
+            return View(viewModel);
         }
 
         // GET: Messages/Create
@@ -199,17 +206,22 @@ namespace NatzHarmonyCapstone.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MessagesId,SenderId,RecipientId,Content,TimeStamp,IsRead")] Messages messages)
+        public async Task<IActionResult> Create(string recipientId, [Bind("MessagesId,SenderId,RecipientId,Content,TimeStamp,IsRead")] SingleConversation messageItem )
         {
-            if (ModelState.IsValid)
+            var user = await GetCurrentUserAsync();
+            var newMessage = new Messages()
             {
-                _context.Add(messages);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["RecipientId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", messages.RecipientId);
-            ViewData["SenderId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", messages.SenderId);
-            return View(messages);
+                Content = messageItem.Content,
+                RecipientId = recipientId,
+                TimeStamp = DateTime.Now,
+                SenderId = user.Id,
+                IsRead = false
+            };
+    
+            _context.Add(newMessage);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", new { id = recipientId });
+
         }
 
         // GET: Messages/Edit/5
