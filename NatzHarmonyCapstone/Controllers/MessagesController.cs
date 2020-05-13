@@ -54,6 +54,7 @@ namespace NatzHarmonyCapstone.Controllers
                 var messagesView = new List<ConversationItem>();
                 var conversationItem = new ConversationItem();
                 conversationItem.Match = mentor;
+                conversationItem.User = mentee;
                 conversationItem.RecentMessage = lastMessage;
                 conversationItem.IsRead = lastMessage.IsRead;
 
@@ -87,12 +88,15 @@ namespace NatzHarmonyCapstone.Controllers
                     }
                     else
                     {
+                        var placeholder = new ApplicationUser();
+                        placeholder = mentee.User;
+                        
                         lastMessage = new Messages()
                         {
                             RecipientId = mentee.UserId,
                             Recipient = mentee.User,
-                            Sender = mentor,
-                            SenderId = mentor.Id,
+                            Sender = mentor, 
+                            SenderId = placeholder.Id,
                             Content = "This is a new match! You have not messaged this user yet."
                         };
                         lastMessages.Add(lastMessage);
@@ -104,6 +108,7 @@ namespace NatzHarmonyCapstone.Controllers
                 foreach (var item in lastMessages)
                 {
                     var conversationItem = new ConversationItem();
+                    conversationItem.User = mentor;
                     if (item.SenderId != user.Id)
                     {
                         conversationItem.Match = item.Sender;

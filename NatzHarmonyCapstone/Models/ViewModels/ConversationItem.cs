@@ -9,6 +9,7 @@ namespace NatzHarmonyCapstone.Models.ViewModels
     public class ConversationItem
     {
         public bool IsRead { get; set; }
+        public ApplicationUser User { get; set; }
         public ApplicationUser Match { get; set; }
         public Messages RecentMessage { get; set; }
     }

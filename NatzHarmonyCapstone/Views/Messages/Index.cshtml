@@ -24,23 +24,27 @@
         </tr>
         }
     </tbody>*@
+
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    <img src="~/images/@item.Match.AvatarUrl" style="max-height: 75px; max-width: 75px;" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Match.FirstName) @Html.DisplayFor(modelItem => item.Match.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RecentMessage.Content)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RecentMessage.TimeStamp)
-                </td>
-            </tr>
+            <tbody class="@(item.IsRead == true ? "IsRead" : "UnRead")">
+                <tr>
+                    <td>
+                        <img src="~/images/@item.Match.AvatarUrl" style="max-height: 75px; max-width: 75px;" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Match.FirstName) @Html.DisplayFor(modelItem => item.Match.LastName)
+                    </td>
+                    <td>
+                       @if (@item.RecentMessage.SenderId == item.User.Id) {<p>You: </p>} 
+                        @Html.DisplayFor(modelItem => item.RecentMessage.Content)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RecentMessage.TimeStamp)
+                    </td>
+                </tr>
+            </tbody>
         }
     </tbody>
 </table>
