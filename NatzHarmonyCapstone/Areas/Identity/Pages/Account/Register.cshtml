@@ -11,6 +11,21 @@
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
             <h4>Create a new account.</h4>
             <hr />
+            <div class="tab" id="Section0">
+                <h5>Are you at least 18 years or older? </h5>
+                @*<button class="btn btn-primary" id="yesBtn1">Yes</button>
+                <button class="btn btn-secondary" id="noBtn">No</button>*@
+            </div>
+            <div class="tab" id="Section0">
+                <h5>Are you a permanent resident and have had a green card for more than 5 years?</h5>
+                @*<button class="btn btn-primary" id="yesBtn2">Yes</button>
+                <button class="btn btn-secondary" id="noBtn">No</button>*@
+            </div>
+            <div class="tab" id="Section0">
+                <h5>Can you read, write, and speak basic English?</h5>
+                @*<button class="btn btn-primary" id="yesBtn3">Yes</button>
+                <button class="btn btn-secondary" id="noBtn">No</button>*@
+            </div>
             <div class="tab" id="Section1">
                 <input type="hidden" id="isMentor" asp-for="Input.IsMentor" value="false" />
                 <button class="btn btn-primary" id="mentorBtnTru">Become a Mentor</button>
@@ -74,7 +89,7 @@
                 </div>
             </div>
             <div class="tab" id="Section4">
-               
+
                 <div class="form-group">
                     <label asp-for="Input.CountryId"></label>
                     <select asp-for="Input.CountryId" class="form-control" asp-items="@Model.CountryOptions"></select>
@@ -136,6 +151,9 @@
         const mentorFalse = document.getElementById("mentorBtnFal")
         const nextBtn = document.getElementById("nextBtn")
         const prevBtn = document.getElementById("prevBtn")
+        const yesBtn1 = document.getElementById("yesBtn1")
+        const yesBtn2 = document.getElementById("yesBtn2")
+        const yesBtn3 = document.getElementById("yesBtn3")
 
         //"Views" by section
         const Section1 = document.getElementById("Section1")
@@ -165,13 +183,16 @@
 
             if (n == 0) {
                 document.getElementById("prevBtn").style.display = "none";
+            } else if (n <= (x.Length - 6)) {
+                document.getElementById("prevBtn").innerHTML = "No";
             } else {
                 document.getElementById("prevBtn").style.display = "inline";
             }
             if (n == (x.length - 1)) {
-                document.getElementById("nextBtn").innerHTML = "Submit";
-            } else {
-                document.getElementById("nextBtn").innerHTML = "Next";
+                document.getElementById("nextBtn").style.display = "none";
+            } else if (n <= (x.length - 6)) {
+                document.getElementById("nextBtn").innerHTML = "Yes";
+            } else { document.getElementById("nextBtn").innerHTML = "Next";
             }
             fixStepIndicator(n)
         }
@@ -180,7 +201,7 @@
 
 
         const nextPrev = (n) => {
-           
+
             var x = document.getElementsByClassName("tab");
             if (n == 1 && !validateForm()) return false;
             x[currentTab].style.display = "none";
@@ -227,9 +248,17 @@
         nextBtn.addEventListener("click", evt => {
             nextPrev(1)
         });
-
         prevBtn.addEventListener("click", evt => {
             nextPrev(-1)
+        });
+        yesBtn1.addEventListener("click", evt => {
+            nextPrev(1)
+        });
+        yesBtn2.addEventListener("click", evt => {
+            nextPrev(1)
+        });
+        yesBtn3.addEventListener("click", evt => {
+            nextPrev()
         });
 
     </script>
@@ -238,3 +267,21 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+
+ @*const showTab = (n) => {
+            let x = document.getElementsByClassName("tab");
+            x[n].style.display = "block";
+
+            if (n == 0) {
+                document.getElementById("prevBtn").style.display = "none";
+            } else {
+                document.getElementById("prevBtn").style.display = "inline";
+            }
+            if (n == (x.length - 1)) {
+                document.getElementById("nextBtn").style.display = "none";
+            } else {
+                document.getElementById("nextBtn").innerHTML = "Next";
+            }
+            fixStepIndicator(n)
+        }*@

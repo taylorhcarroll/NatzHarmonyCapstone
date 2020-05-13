@@ -105,7 +105,7 @@ namespace NatzHarmonyCapstone.Areas.Identity.Pages.Account
 
             public List<int> SelectLangIds { get; set; }
 
-            [Display(Name = "Do you prefer your mentor speak the same native languag as you?")]
+            [Display(Name = "Do you prefer your mentor speak the same native language as you?")]
             public bool LanguagePref { get; set; }
             
             [Display(Name = "Do you prefer your mentor is from the same country as you?")]
