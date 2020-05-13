@@ -95,7 +95,7 @@ namespace NatzHarmonyCapstone.Controllers
                         {
                             RecipientId = mentee.UserId,
                             Recipient = mentee.User,
-                            Sender = mentor, 
+                            Sender = placeholder, 
                             SenderId = placeholder.Id,
                             Content = "This is a new match! You have not messaged this user yet."
                         };
