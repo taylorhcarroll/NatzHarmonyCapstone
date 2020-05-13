@@ -31,7 +31,7 @@
             <tbody class="@(item.IsRead == true ? "IsRead" : "UnRead")">
                 <tr>
                     <td>
-                       <a asp-action="Details" asp-route-id="@item.Match.Id" ><img src="~/images/@item.Match.AvatarUrl" style="max-height: 75px; max-width: 75px;" /></a>
+                        <a asp-action="Details" asp-route-id="@item.Match.Id"><img src="~/images/@item.Match.AvatarUrl" style="max-height: 75px; max-width: 75px;" /></a>
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Match.FirstName) @Html.DisplayFor(modelItem => item.Match.LastName)
@@ -42,9 +42,18 @@
                     else
                     {<p>@Html.DisplayFor(modelItem => item.RecentMessage.Content)</p>}
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RecentMessage.TimeStamp)
-                    </td>
+                    @if (item.RecentMessage.TimeStamp.Year == 0001)
+                    {
+                        <td>
+                         
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RecentMessage.TimeStamp)
+                        </td>
+                    }
                 </tr>
             </tbody>
         }
