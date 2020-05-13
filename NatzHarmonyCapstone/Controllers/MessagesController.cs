@@ -159,19 +159,25 @@ namespace NatzHarmonyCapstone.Controllers
         }
 
         // GET: Messages/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-
+            var user = await GetCurrentUserAsync();
 
             var messages = await _context.Messages
-                .Include(m => m.Recipient)
-                .Include(m => m.Sender)
-                .FirstOrDefaultAsync(m => m.MessagesId == id);
+                            .Include(u => u.Sender)
+                            .Where(m => m.SenderId == user.Id || m.RecipientId == user.Id)
+                            .Where(m => m.SenderId == id || m.RecipientId == id)
+                            .OrderBy(m => m.TimeStamp)
+                            .ToListAsync();
+                        //.Where(m => m.SenderId = user.Id || m.RecipientId = user.Id)
+                        //.Where(m => m.SenderId == mentee.UserId || m.RecipientId == mentee.UserId)
+                        //.OrderByDescending(m => m.TimeStamp)
+                        
             if (messages == null)
             {
                 return NotFound();
