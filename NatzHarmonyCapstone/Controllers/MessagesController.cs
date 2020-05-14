@@ -200,11 +200,15 @@ namespace NatzHarmonyCapstone.Controllers
                             .Where(m => m.SenderId == user.Id || m.RecipientId == user.Id)
                             .Where(m => m.SenderId == id || m.RecipientId == id)
                             .OrderBy(m => m.TimeStamp)
+                            .AsNoTracking()
                             .ToListAsync();
-                        //.Where(m => m.SenderId = user.Id || m.RecipientId = user.Id)
-                        //.Where(m => m.SenderId == mentee.UserId || m.RecipientId == mentee.UserId)
-                        //.OrderByDescending(m => m.TimeStamp)
-                        
+            //.Where(m => m.SenderId = user.Id || m.RecipientId = user.Id)
+            //.Where(m => m.SenderId == mentee.UserId || m.RecipientId == mentee.UserId)
+            //.OrderByDescending(m => m.TimeStamp)
+
+            await UpdateMethod(messages);
+           
+            
             if (messages == null)
             {
                 return NotFound();
@@ -250,21 +254,38 @@ namespace NatzHarmonyCapstone.Controllers
         }
 
         // GET: Messages/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> UpdateMethod(List<Messages> messages)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var messages = await _context.Messages.FindAsync(id);
+            var user = await GetCurrentUserAsync();
             if (messages == null)
             {
-                return NotFound();
+                return null;
             }
-            ViewData["RecipientId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", messages.RecipientId);
-            ViewData["SenderId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", messages.SenderId);
-            return View(messages);
+            else
+            {
+                foreach(var item in messages)
+                { 
+                    if (item.SenderId != user.Id)
+                    {
+
+                            var dataModel = new Messages()
+                            {
+                                MessagesId = item.MessagesId,
+                                SenderId = item.SenderId,
+                                RecipientId = item.RecipientId,
+                                Content = item.Content,
+                                TimeStamp = item.TimeStamp,
+                                IsRead = true,
+
+                            };
+                            _context.Messages.Update(dataModel);
+                            await _context.SaveChangesAsync();
+                    }
+                }
+                        
+                return null;
+            }
+
         }
 
         // POST: Messages/Edit/5

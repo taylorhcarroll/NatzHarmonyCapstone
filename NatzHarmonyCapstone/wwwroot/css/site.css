@@ -51,11 +51,15 @@ button.accept-policy {
   line-height: inherit;
 }
 
+.conversationItem {
+    display: flex;
+    align-items: center;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {

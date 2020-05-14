@@ -4,58 +4,44 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h4>Messages</h4>
 
 <p>
-    <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    @*<tbody>
-        @foreach (var item in Model.Matches)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-          
-        </tr>
-        }
-    </tbody>*@
 
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tbody class="@(item.IsRead == true ? "IsRead" : "UnRead")">
-                <tr>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@item.Match.Id"><img src="~/images/@item.Match.AvatarUrl" style="max-height: 75px; max-width: 75px;" /></a>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Match.FirstName) @Html.DisplayFor(modelItem => item.Match.LastName)
-                    </td>
-                    <td>
-                        @if (@item.RecentMessage.SenderId == item.User.Id)
-                        {<p>You: @Html.DisplayFor(modelItem => item.RecentMessage.Content) </p>}
-                    else
-                    {<p>@Html.DisplayFor(modelItem => item.RecentMessage.Content)</p>}
-                    </td>
-                    @if (item.RecentMessage.TimeStamp.Year == 0001)
-                    {
+
+@foreach (var item in Model)
+{
+    <div class="conversationItem @(item.IsRead == true ? "card text-white bg-primary" : "card text-white bg-warning")">
+            <table class="table table-sm">
+                <tbody>
+                    <tr>
                         <td>
-                         
+                            <a asp-action="Details" asp-route-id="@item.Match.Id"><img src="~/images/@item.Match.AvatarUrl" style="max-height: 75px; max-width: 75px;" /></a>
                         </td>
-                    }
-                    else
-                    {
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RecentMessage.TimeStamp)
+                        <td class="@(item.IsRead == true ? "text-warning" : "text-primary") align-middle">
+                            @Html.DisplayFor(modelItem => item.Match.FirstName) @Html.DisplayFor(modelItem => item.Match.LastName)
                         </td>
-                    }
-                </tr>
-            </tbody>
-        }
-    </tbody>
-</table>
+                        <td class="text-white align-middle">
+                            @if (@item.RecentMessage.SenderId == item.User.Id)
+                            {<p class="align-middle">You: @Html.DisplayFor(modelItem => item.RecentMessage.Content) </p>}
+                        else
+                        {<p class="align-middle">@Html.DisplayFor(modelItem => item.RecentMessage.Content)</p>}
+                        </td>
+                        @if (item.RecentMessage.TimeStamp.Year == 0001)
+                        {
+                            <td>
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="text-white align-middle">
+                                @item.ToString()
+                            </td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+    </div>
+    }
+

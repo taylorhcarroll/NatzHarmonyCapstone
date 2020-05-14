@@ -20,7 +20,7 @@ namespace NatzHarmonyCapstone.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Messages");
         }
 
         public IActionResult Privacy()

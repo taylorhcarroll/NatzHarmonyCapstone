@@ -4,10 +4,9 @@
     ViewData["Title"] = "MyProfile";
 }
 
-<h1>MyProfile</h1>
+<h2>MyProfile</h2>
 
 <div>
-    <h4>ProfileFormViewModel</h4>
     <hr />
    
         <img src="~/images/@Model.AvatarUrl" style="max-height: 75px; max-width: 75px;" />
@@ -65,5 +64,9 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        <a class="nav-link text-dark" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage Account">Manage Account </a>
+        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+        </form>
 </div>
