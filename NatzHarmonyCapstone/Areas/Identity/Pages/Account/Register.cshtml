@@ -13,18 +13,19 @@
             <hr />
             <div class="tab" id="Section0">
                 <h5>Are you at least 18 years or older? </h5>
-                @*<button class="btn btn-primary" id="yesBtn1">Yes</button>
-                <button class="btn btn-secondary" id="noBtn">No</button>*@
+                <input type="hidden" id="placeholder" value="true" />
+                <button class="btn btn-primary" id="yesBtn1">Yes</button>
+                <button class="btn btn-secondary" id="noBtn">No</button>
             </div>
             <div class="tab" id="Section0">
                 <h5>Are you a permanent resident and have had a green card for more than 5 years?</h5>
-                @*<button class="btn btn-primary" id="yesBtn2">Yes</button>
-                <button class="btn btn-secondary" id="noBtn">No</button>*@
+                <button class="btn btn-primary" id="yesBtn2">Yes</button>
+                <button class="btn btn-secondary" id="noBtn">No</button>
             </div>
             <div class="tab" id="Section0">
                 <h5>Can you read, write, and speak basic English?</h5>
-                @*<button class="btn btn-primary" id="yesBtn3">Yes</button>
-                <button class="btn btn-secondary" id="noBtn">No</button>*@
+                <button class="btn btn-primary" id="yesBtn3">Yes</button>
+                <button class="btn btn-secondary" id="noBtn">No</button>
             </div>
             <div class="tab" id="Section1">
                 <input type="hidden" id="isMentor" asp-for="Input.IsMentor" value="false" />
@@ -181,18 +182,15 @@
             let x = document.getElementsByClassName("tab");
             x[n].style.display = "block";
 
-            if (n == 0) {
+            if (n <= (x.length + 2)) {
                 document.getElementById("prevBtn").style.display = "none";
-            } else if (n <= (x.Length - 6)) {
-                document.getElementById("prevBtn").innerHTML = "No";
             } else {
                 document.getElementById("prevBtn").style.display = "inline";
             }
-            if (n == (x.length - 1)) {
+            if (n <= (x.length + 2)) {
                 document.getElementById("nextBtn").style.display = "none";
-            } else if (n <= (x.length - 6)) {
-                document.getElementById("nextBtn").innerHTML = "Yes";
-            } else { document.getElementById("nextBtn").innerHTML = "Next";
+            } else {
+                document.getElementById("nextBtn").innerHTML = "Next";
             }
             fixStepIndicator(n)
         }
@@ -211,6 +209,10 @@
                 return false;
             }
             showTab(currentTab);
+        }
+
+        const yesNext = (n) => {
+
         }
 
         ////unsure if need this function
@@ -258,7 +260,7 @@
             nextPrev(1)
         });
         yesBtn3.addEventListener("click", evt => {
-            nextPrev()
+            nextPrev(1)
         });
 
     </script>
@@ -269,19 +271,39 @@
 }
 
 
- @*const showTab = (n) => {
+@*const showTab = (n) => {
+        let x = document.getElementsByClassName("tab");
+        x[n].style.display = "block";
+
+        if (n == 0) {
+            document.getElementById("prevBtn").style.display = "none";
+        } else {
+            document.getElementById("prevBtn").style.display = "inline";
+        }
+        if (n == (x.length - 1)) {
+            document.getElementById("nextBtn").style.display = "none";
+        } else {
+            document.getElementById("nextBtn").innerHTML = "Next";
+        }
+        fixStepIndicator(n)
+    }*@
+
+@*const showTab = (n) => {
             let x = document.getElementsByClassName("tab");
             x[n].style.display = "block";
 
             if (n == 0) {
                 document.getElementById("prevBtn").style.display = "none";
+            } else if (n <= (x.Length - 6)) {
+                document.getElementById("prevBtn").innerHTML = "No";
             } else {
                 document.getElementById("prevBtn").style.display = "inline";
             }
             if (n == (x.length - 1)) {
                 document.getElementById("nextBtn").style.display = "none";
-            } else {
-                document.getElementById("nextBtn").innerHTML = "Next";
+            } else if (n <= (x.length - 6)) {
+                document.getElementById("nextBtn").innerHTML = "Yes";
+            } else { document.getElementById("nextBtn").innerHTML = "Next";
             }
             fixStepIndicator(n)
         }*@

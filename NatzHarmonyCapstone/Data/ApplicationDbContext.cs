@@ -68,7 +68,77 @@ namespace NatzHarmonyCapstone.Data
                 {
                     CountryId = 2,
                     Name = "Mexico"
-                }
+                },
+                new Country()
+                {
+                    CountryId = 3,
+                    Name = "Afghanistan"
+                },
+                 new Country()
+                 {
+                     CountryId = 4,
+                     Name = "Albania"
+                 },
+                  new Country()
+                  {
+                      CountryId = 5,
+                      Name = "Algeria"
+                  },
+                   new Country()
+                   {
+                       CountryId = 6,
+                       Name = "Andorra"
+                   },
+                   new Country()
+                   {
+                       CountryId = 7,
+                       Name = "Angola"
+                   },
+                   new Country()
+                   {
+                       CountryId = 8,
+                       Name = "Argentina"
+                   },
+                    new Country()
+                    {
+                        CountryId = 9,
+                        Name = "Armenia"
+                    },
+                    new Country()
+                    {
+                        CountryId = 10,
+                        Name = "Armenia"
+                    },
+                    new Country()
+                    {
+                        CountryId = 11,
+                        Name = "Austrailia"
+                    },
+                    new Country()
+                    {
+                        CountryId = 12,
+                        Name = "Austria"
+                    },
+                    new Country()
+                    {
+                        CountryId = 13,
+                        Name = "Azerbaijan"
+                    },
+                    new Country()
+                    {
+                        CountryId = 14,
+                        Name = "Bahamas"
+                    },
+                    new Country()
+                    {
+                        CountryId = 15,
+                        Name = "Bahrain"
+                    },
+                    new Country()
+                    {
+                        CountryId = 16,
+                        Name = "Bangladesh"
+                    }
                 );
 
             ApplicationUser user = new ApplicationUser
