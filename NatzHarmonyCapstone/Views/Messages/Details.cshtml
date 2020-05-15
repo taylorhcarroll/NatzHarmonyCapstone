@@ -2,31 +2,69 @@
 @{
     ViewData["Title"] = "Details";
 }
-
-<h1>Details</h1>
-
 <div>
     <h4>Messages</h4>
     <hr />
-    <table class="table">
+    <table class="table" style="table-layout: fixed">
         @foreach (var item in Model.Messages)
         {
-            <tbody>
-                <tr>
-                    <td>
-                        <img src="~/images/@item.Sender.AvatarUrl" style="max-height: 75px; max-width: 75px;" />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Sender.FirstName) @Html.DisplayFor(modelItem => item.Sender.LastName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Content)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TimeStamp)
-                    </td>
-                </tr>
-            </tbody>
+            if (item.Sender.Id == Model.Match.Id)
+            {
+                <thead style="">
+                    <tr stlye=display: flex; justify-content: space-around">
+                        <th colspan="2" class="text-center">
+                            @Html.DisplayFor(modelItem => item.TimeStamp)
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>
+                            @if (item.Sender.AvatarUrl == null)
+                            {
+                                <img src="~/images/logo2.svg" style="max-height: 75px; max-width: 75px;" />
+                            }
+                            else
+                            {
+                                <img src="~/images/@item.Sender.AvatarUrl" style="max-height: 75px; max-width: 75px;" />
+                            }
+                            @*@Html.DisplayFor(modelItem => item.Sender.FirstName) @Html.DisplayFor(modelItem => item.Sender.LastName)*@
+                        </td>
+                        <td class="align-middle card text-white bg-secondary">
+                            @Html.DisplayFor(modelItem => item.Content)
+                        </td>
+                    </tr>
+                </tbody>
+            }
+            else
+            {
+                <thead>
+                    <tr class="mx-auto">
+                        <th colspan="2" class="text-center">
+                            @Html.DisplayFor(modelItem => item.TimeStamp)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="align-middle card text-white bg-primary">
+                            @Html.DisplayFor(modelItem => item.Content)
+                        </td>
+                        <td>
+                            @if (item.Sender.AvatarUrl == null)
+                            {
+                                <img align="right" src="~/images/logo2.svg" style="max-height: 75px; max-width: 75px;" />
+                            }
+                            else
+                            {
+                                <img align="right" src="~/images/@item.Sender.AvatarUrl" style="max-height: 75px; max-width: 75px;" />
+                            }
+                            @*@Html.DisplayFor(modelItem => item.Sender.FirstName) @Html.DisplayFor(modelItem => item.Sender.LastName)*@
+                        </td>
+                    </tr>
+                </tbody>
+            }
         }
     </table>
     <div class="col-md-4">

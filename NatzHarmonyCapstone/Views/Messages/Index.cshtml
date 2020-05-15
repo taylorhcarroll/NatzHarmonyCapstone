@@ -12,12 +12,21 @@
 
 @foreach (var item in Model)
 {
-    <div class="conversationItem @(item.IsRead == true ? "card text-white bg-primary" : "card text-white bg-warning")">
+    <div style="margin-bottom: 10px; border-radius: 8px;" class="conversationItem @(item.IsRead == true ? "card text-white bg-primary" : "card text-white bg-warning")">
             <table class="table table-sm">
                 <tbody>
                     <tr>
                         <td>
-                            <a asp-action="Details" asp-route-id="@item.Match.Id"><img src="~/images/@item.Match.AvatarUrl" style="max-height: 75px; max-width: 75px;" /></a>
+                            <a asp-action="Details" asp-route-id="@item.Match.Id">
+                                @if (item.Match.AvatarUrl == null)
+                                {
+                                    <img src="~/images/logo2.svg" style="max-height: 75px; max-width: 75px;" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/@item.Match.AvatarUrl" style="max-height: 75px; max-width: 75px;" />
+                                }
+                            </a>
                         </td>
                         <td class="@(item.IsRead == true ? "text-warning" : "text-primary") align-middle">
                             @Html.DisplayFor(modelItem => item.Match.FirstName) @Html.DisplayFor(modelItem => item.Match.LastName)

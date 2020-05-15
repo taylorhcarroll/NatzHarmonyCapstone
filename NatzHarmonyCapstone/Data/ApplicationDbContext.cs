@@ -180,6 +180,8 @@ namespace NatzHarmonyCapstone.Data
             user.PasswordHash = passwordHash2.HashPassword(userAdmin, "Admin8*");
             modelBuilder.Entity<ApplicationUser>().HasData(userAdmin);
 
+
+
             //this line makes the Countries
             modelBuilder.Entity<Language>().HasData(
                 new Language()

@@ -43,7 +43,13 @@ namespace NatzHarmonyCapstone.Controllers
                     .FirstOrDefault(u => user.Id == u.Id);
 
                 //sets mentor as a variable from data pulled from above
+               if (mentee.UserMentors.Count == 0) 
+                {
+                    return RedirectToAction("MyMatches", "User");
+                }
+                   
                 var mentor = mentee.UserMentors.FirstOrDefault().Mentor;
+
 
                 var lastMessage = _context.Messages
                     .Where(m => m.SenderId == mentee.Id || m.RecipientId == mentee.Id)

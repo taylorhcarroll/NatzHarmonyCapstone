@@ -50,12 +50,22 @@ namespace NatzHarmonyCapstone.Controllers
 
         public async Task<ActionResult> MyMatches()
         {
+
             var currentUser = await GetCurrentUserAsync();
             var currentUserId = currentUser.Id.ToString();
             var user = await _context.ApplicationUsers
                 .Include(u => u.Languages)
                     .ThenInclude(ul => ul.Language)
                         .FirstOrDefaultAsync(user => user.Id == currentUserId);
+
+            var test = _context.ApplicationUsers
+                  .Include(u => u.UserMentors)
+                      .ThenInclude(um => um.Mentor)
+                  .FirstOrDefault(u => user.Id == u.Id);
+            if (test.UserMentors.Count != 0)
+            {
+                return RedirectToAction("Index", "Messages");
+            }
 
             var matches = MatchEngine(user);
 

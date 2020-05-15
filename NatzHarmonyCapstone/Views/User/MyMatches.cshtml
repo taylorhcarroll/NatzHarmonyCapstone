@@ -31,7 +31,14 @@
         {
             <tr>
                 <td>
-                    <img src="~/images/@item.AvatarUrl" style="max-height: 75px; max-width: 75px;" />
+                    @if (item.AvatarUrl == null)
+                    {
+                        <img src="~/images/logo2.svg" style="max-height: 75px; max-width: 75px;" />
+                    }
+                    else
+                    {
+                        <img src="~/images/@item.AvatarUrl" style="max-height: 75px; max-width: 75px;" />
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.FirstName)
