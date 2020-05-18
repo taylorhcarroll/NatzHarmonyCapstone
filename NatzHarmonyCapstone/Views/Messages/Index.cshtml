@@ -12,9 +12,54 @@
 
 @foreach (var item in Model)
 {
-    <div style="margin-bottom: 10px; border-radius: 8px;" class="conversationItem @(item.IsRead == true || item.RecentMessage.SenderId == item.User.Id ? "card text-white bg-primary" : "card text-white bg-warning")">
+
+    <div align="left" style="margin-bottom: 10px; border-radius: 8px; max-width: 385px" class="conversationItem @(item.IsRead == true || item.RecentMessage.SenderId == item.User.Id ? "card text-white bg-primary" : "card text-white bg-warning")">
+        <div class="row no-gutters">
+            <div style="max-width: 75px; max-height: 75px;" class="col-xs-3">
+                <a asp-action="Details" asp-route-id="@item.Match.Id">
+                    @if (item.Match.AvatarUrl == null)
+                    {
+                        <img src="~/images/logo2.svg" style="max-height: 75px; max-width: 75px;" />
+                    }
+                    else
+                    {
+                        <img src="~/images/@item.Match.AvatarUrl" style="max-height: 75px; max-width: 75px;" />
+                    }
+                </a>
+            </div>
+            <div class="col-xs-4">
+                <div class="card-body">
+                    <h5 align="left" class=" @(item.IsRead == true || item.RecentMessage.SenderId == item.User.Id ? "text-warning" : "text-primary") align-middle">
+                        @Html.DisplayFor(modelItem => item.Match.FirstName) @Html.DisplayFor(modelItem => item.Match.LastName)>
+                    </h5>
+                    <p class="text-white align-middle col-xs-8">
+                        @if (@item.RecentMessage.SenderId == item.User.Id)
+                        {
+                        <p class="align-middle">You: @Html.DisplayFor(modelItem => item.RecentMessage.Content) </p>
+                    }
+                    else
+                    {
+                        <p class="align-middle">@Html.DisplayFor(modelItem => item.RecentMessage.Content)</p>
+                    }
+                        <p align="right" class="col-xs-3">
+                            <small class="text-white align-middle">
+                                @if (item.RecentMessage.TimeStamp.Year == 0001)
+                                {
+
+                                }
+                                else
+                                {
+                                    @item.ToString()
+                                }
+                            </small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+       @* <div style="margin-bottom: 10px; border-radius: 8px;" class="conversationItem @(item.IsRead == true || item.RecentMessage.SenderId == item.User.Id ? "card text-white bg-primary" : "card text-white bg-warning")">
             @*<table @(item.RecentMessage.TimeStamp.Year == 0001) ?  style="table-layout: fixed" :  )>*@
-                <table >
+           @* <table>
                 <tbody>
                     <tr>
                         <td style="max-width: 75px" align="left">
@@ -32,14 +77,14 @@
                         <td align="left" class="@(item.IsRead == true || item.RecentMessage.SenderId == item.User.Id ? "text-warning" : "text-primary") align-middle">
                             @Html.DisplayFor(modelItem => item.Match.FirstName) @Html.DisplayFor(modelItem => item.Match.LastName)
                         </td>
-                        <td   class="text-white align-middle">
+                        <td class="text-white align-middle">
                             @if (@item.RecentMessage.SenderId == item.User.Id)
                             {
                                 <p class="align-middle">You: @Html.DisplayFor(modelItem => item.RecentMessage.Content) </p>
                             }
-                        else
-                        {
-                            <p class="align-middle">@Html.DisplayFor(modelItem => item.RecentMessage.Content)</p>}
+                            else
+                            {
+                                <p class="align-middle">@Html.DisplayFor(modelItem => item.RecentMessage.Content)</p>}
                         </td>
                         @if (item.RecentMessage.TimeStamp.Year == 0001)
                         {
@@ -55,6 +100,6 @@
                     </tr>
                 </tbody>
             </table>
-    </div>
+        </div>*@
     }
 
