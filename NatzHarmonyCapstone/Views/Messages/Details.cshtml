@@ -23,11 +23,15 @@
                         <td>
                             @if (item.Sender.AvatarUrl == null)
                             {
-                                <img src="~/images/logo2.svg" style="max-height: 75px; max-width: 75px;" />
+                                <a asp-controller="User" asp-action="Details" name="id" asp-route-returnController="@Model.ReturnController" asp-route-returnAction="@Model.ReturnAction" asp-route-id="@Model.Match.Id">
+                                    <img src="~/images/logo2.svg" style="max-height: 75px; max-width: 75px;" />
+                                </a>
                             }
                             else
                             {
+                                <a  asp-controller="User" asp-action="Details" name="id" asp-route-returnController="@Model.ReturnController" asp-route-returnAction="@Model.ReturnAction" asp-route-id="@Model.Match.Id">
                                 <img src="~/images/@item.Sender.AvatarUrl" style="max-height: 75px; max-width: 75px;" />
+                                </a>
                             }
                             @*@Html.DisplayFor(modelItem => item.Sender.FirstName) @Html.DisplayFor(modelItem => item.Sender.LastName)*@
                         </td>
@@ -54,11 +58,15 @@
                         <td>
                             @if (item.Sender.AvatarUrl == null)
                             {
-                                <img align="right" src="~/images/logo2.svg" style="max-height: 75px; max-width: 75px;" />
+                                <a asp-controller="User" asp-action="MyProfile">
+                                    <img align="right" src="~/images/logo2.svg" style="max-height: 75px; max-width: 75px;" />
+                                </a>
                             }
                             else
                             {
-                                <img align="right" src="~/images/@item.Sender.AvatarUrl" style="max-height: 75px; max-width: 75px;" />
+                                <a asp-controller="User" asp-action="MyProfile">
+                                    <img align="right" src="~/images/@item.Sender.AvatarUrl" style="max-height: 75px; max-width: 75px;" />
+                                </a>
                             }
                             @*@Html.DisplayFor(modelItem => item.Sender.FirstName) @Html.DisplayFor(modelItem => item.Sender.LastName)*@
                         </td>

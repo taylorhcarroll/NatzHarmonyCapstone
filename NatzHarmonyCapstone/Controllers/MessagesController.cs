@@ -221,6 +221,9 @@ namespace NatzHarmonyCapstone.Controllers
             }
 
             var viewModel = new SingleConversation();
+            viewModel.ReturnController = "Messages";
+            viewModel.ReturnAction = "Index";
+            viewModel.ReturnId = id;
             viewModel.Messages = messages;
             viewModel.User = user;
             viewModel.Match = match;

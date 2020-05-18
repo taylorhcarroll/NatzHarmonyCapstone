@@ -12,6 +12,8 @@ namespace NatzHarmonyCapstone.Models.ViewModels
         public ApplicationUser User { get; set; }
         public ApplicationUser Match { get; set; }
         public Messages RecentMessage { get; set; }
+        public string ReturnAction { get; set; }
+        public string ReturnController { get; set; }
 
         public override string ToString()
         {

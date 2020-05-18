@@ -25,9 +25,9 @@
     </thead>*@
         @foreach (var item in Model.MatchList)
         {
-        <tbody class="card text-white bg-primary" style="border-radius:8px">
+        <tbody class="card text-white bg-primary" style="border-radius:8px; margin-bottom: 10px">
             <tr>
-                <td rowspan="2">
+                <td rowspan="2" colspan="2">
                     @if (item.AvatarUrl == null)
                     {
                         <img src="~/images/logo2.svg" style="        max-height: 75px; max-width: 75px;" />
@@ -44,17 +44,17 @@
                 @*<td>
                     @Html.DisplayFor(modelItem => item.Gender)
                 </td>*@
-                
                 <td>    
                     <a class="btn btn-outline-secondary" asp-action="Details" name="id" asp-route-returnController="@Model.ReturnController" asp-route-returnAction="@Model.ReturnAction" asp-route-id="@item.Id">Details</a>
                 </td>
                 <td>
                     <a class="btn btn-primary" asp-action="AddMentor" name="id" asp-route-id="@item.Id">Add Mentor</a>
                 </td>
+                
             </tr>
-            @*<tr>
 
-            </tr>*@
+            <tr>
+            </tr>
         </tbody>
         }
 </table>

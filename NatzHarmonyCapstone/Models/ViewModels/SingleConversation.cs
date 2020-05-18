@@ -14,8 +14,10 @@ namespace NatzHarmonyCapstone.Models.ViewModels
 
         public string RecipientId { get; set; }
         public string Content { get; set; }
-
         public DateTime TimeStamp { get; set; }
 
+        public string ReturnAction { get; set; }
+        public string ReturnController { get; set; }
+        public string ReturnId { get; set; }
     }
 }
