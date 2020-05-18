@@ -343,7 +343,6 @@ namespace NatzHarmonyCapstone.Controllers
                             Id = reader.GetString(reader.GetOrdinal("Id")),
                             FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
                             LastName = reader.GetString(reader.GetOrdinal("LastName")),
-                            //AvatarUrl = reader.GetString(reader.GetOrdinal("AvatarUrl")),
                             Gender = reader.GetString(reader.GetOrdinal("Gender")),
                             Availability = reader.GetString(reader.GetOrdinal("Availability")),
                             CountryId = reader.GetInt32(reader.GetOrdinal("CountryId"))

@@ -176,11 +176,129 @@ namespace NatzHarmonyCapstone.Data
                 SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794578",
                 Id = "00000000-ffff-ffff-ffff-ffffffffffaa"
             };
-            var passwordHash2 = new PasswordHasher<ApplicationUser>();
-            user.PasswordHash = passwordHash2.HashPassword(userAdmin, "Admin8*");
+            var passwordHashAdmin = new PasswordHasher<ApplicationUser>();
+            user.PasswordHash = passwordHashAdmin.HashPassword(userAdmin, "Admin8*");
             modelBuilder.Entity<ApplicationUser>().HasData(userAdmin);
 
+            ApplicationUser userExample = new ApplicationUser
+            {
+                FirstName = "Adam",
+                LastName = "Kodansha",
+                UserName = "adam@example.com",
+                NormalizedUserName = "ADAM@EXAMPLE.COM",
+                Email = "adam@example.com",
+                NormalizedEmail = "ADAM@EXAMPLE.COM",
+                PhoneNumber = "6155555556",
+                CountryId = 1,
+                Mentor = true,
+                Gender = "Male",
+                Pronouns = "He / Him",
+                DoB = new DateTime(1992,04,02),
+                EmailConfirmed = false,
+                LockoutEnabled = false,
+                Admin = false,
+                SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794579",
+                Id = "00000000-ffff-ffff-ffff-ffffffffffab"
+            };
+            var passwordHash2 = new PasswordHasher<ApplicationUser>();
+            user.PasswordHash = passwordHash2.HashPassword(userExample, "Admin8*");
+            modelBuilder.Entity<ApplicationUser>().HasData(userExample);
 
+            ApplicationUser userExample2 = new ApplicationUser
+            {
+                FirstName = "Namita",
+                LastName = "Patel",
+                UserName = "namita@example.com",
+                NormalizedUserName = "NAMITA@EXAMPLE.COM",
+                Email = "namita@example.com",
+                NormalizedEmail = "NAMITA@EXAMPLE.COM",
+                PhoneNumber = "6155555557",
+                CountryId = 2,
+                Mentor = true,
+                Gender = "Female",
+                Pronouns = "She / Her",
+                DoB = new DateTime(1986, 05, 27),
+                EmailConfirmed = false,
+                LockoutEnabled = false,
+                Admin = false,
+                SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794580",
+                Id = "00000000-ffff-ffff-ffff-ffffffffffac"
+            };
+            var passwordHash3 = new PasswordHasher<ApplicationUser>();
+            user.PasswordHash = passwordHash3.HashPassword(userExample2, "Admin8*");
+            modelBuilder.Entity<ApplicationUser>().HasData(userExample2);
+
+            ApplicationUser userExample3 = new ApplicationUser
+            {
+                FirstName = "Miguel",
+                LastName = "Garcia",
+                UserName = "miguel@example.com",
+                NormalizedUserName = "MIGUEL@EXAMPLE.COM",
+                Email = "miguel@example.com",
+                NormalizedEmail = "MIGUEL@EXAMPLE.COM",
+                PhoneNumber = "6155555557",
+                CountryId = 2,
+                Mentor = true,
+                Gender = "Male",
+                Pronouns = "He / Him",
+                DoB = new DateTime(1988, 02, 17),
+                EmailConfirmed = false,
+                LockoutEnabled = false,
+                Admin = false,
+                SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794581",
+                Id = "00000000-ffff-ffff-ffff-ffffffffffad"
+            };
+            var passwordHash4 = new PasswordHasher<ApplicationUser>();
+            user.PasswordHash = passwordHash4.HashPassword(userExample3, "Admin8*");
+            modelBuilder.Entity<ApplicationUser>().HasData(userExample3);
+
+            ApplicationUser userExample4 = new ApplicationUser
+            {
+                FirstName = "An",
+                LastName = "Nguyen",
+                UserName = "an@example.com",
+                NormalizedUserName = "AN@EXAMPLE.COM",
+                Email = "an@example.com",
+                NormalizedEmail = "AN@EXAMPLE.COM",
+                PhoneNumber = "6155555557",
+                CountryId = 1,
+                Mentor = true,
+                Gender = "Male",
+                Pronouns = "He / Him",
+                DoB = new DateTime(1992, 02, 15),
+                EmailConfirmed = false,
+                LockoutEnabled = false,
+                Admin = false,
+                SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794582",
+                Id = "00000000-ffff-ffff-ffff-ffffffffffae"
+            };
+            var passwordHash5 = new PasswordHasher<ApplicationUser>();
+            user.PasswordHash = passwordHash5.HashPassword(userExample4, "Admin8*");
+            modelBuilder.Entity<ApplicationUser>().HasData(userExample4);
+
+            ApplicationUser userExample5 = new ApplicationUser
+            {
+                FirstName = "Alexander",
+                LastName = "Silva",
+                UserName = "alexander@example.com",
+                NormalizedUserName = "ALEXANDER@EXAMPLE.COM",
+                Email = "alexander@example.com",
+                NormalizedEmail = "ALEXANDER@EXAMPLE.COM",
+                PhoneNumber = "6155555557",
+                CountryId = 2,
+                Mentor = true,
+                Gender = "Male",
+                Pronouns = "He / Him",
+                DoB = new DateTime(1988, 10, 30),
+                EmailConfirmed = false,
+                LockoutEnabled = false,
+                Admin = false,
+                SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794583",
+                Id = "00000000-ffff-ffff-ffff-ffffffffffaf"
+            };
+            var passwordHash6 = new PasswordHasher<ApplicationUser>();
+            user.PasswordHash = passwordHash6.HashPassword(userExample5, "Admin8*");
+            modelBuilder.Entity<ApplicationUser>().HasData(userExample5);
 
             //this line makes the Countries
             modelBuilder.Entity<Language>().HasData(
@@ -255,6 +373,53 @@ namespace NatzHarmonyCapstone.Data
                     Name = "Hindi"
                 }
                 );
+
+            //this line makes the Countries
+            modelBuilder.Entity<UserLanguage>().HasData(
+                new UserLanguage()
+                {
+                    UserLanguageId = 25,
+                    UserId = "00000000-ffff-ffff-ffff-ffffffffffaf",
+                    LanguageId = 11,
+                },
+                new UserLanguage()
+                {
+                    UserLanguageId = 26,
+                    UserId = "00000000-ffff-ffff-ffff-ffffffffffaf",
+                    LanguageId = 1,
+                },
+                new UserLanguage()
+                {
+                    UserLanguageId = 27,
+                    UserId = "00000000-ffff-ffff-ffff-ffffffffffae",
+                    LanguageId = 4,
+                },
+                new UserLanguage()
+                {
+                    UserLanguageId = 28,
+                    UserId = "00000000-ffff-ffff-ffff-ffffffffffad",
+                    LanguageId = 1,
+                },
+                new UserLanguage()
+                {
+                    UserLanguageId = 29,
+                    UserId = "00000000-ffff-ffff-ffff-ffffffffffac",
+                    LanguageId = 6,
+                },
+                new UserLanguage()
+                {
+                    UserLanguageId = 30,
+                    UserId = "00000000-ffff-ffff-ffff-ffffffffffab",
+                    LanguageId = 7,
+                },
+                new UserLanguage()
+                {
+                    UserLanguageId = 31,
+                    UserId = "00000000-ffff-ffff-ffff-ffffffffffaa",
+                    LanguageId = 8,
+                }
+                );
+
             //this line makes the Sample Message
             modelBuilder.Entity<Messages>().HasData(
                 new Messages()
