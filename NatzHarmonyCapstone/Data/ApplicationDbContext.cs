@@ -177,7 +177,7 @@ namespace NatzHarmonyCapstone.Data
                 Id = "00000000-ffff-ffff-ffff-ffffffffffaa"
             };
             var passwordHashAdmin = new PasswordHasher<ApplicationUser>();
-            user.PasswordHash = passwordHashAdmin.HashPassword(userAdmin, "Admin8*");
+            userAdmin.PasswordHash = passwordHashAdmin.HashPassword(userAdmin, "Admin8*");
             modelBuilder.Entity<ApplicationUser>().HasData(userAdmin);
 
             ApplicationUser userExample = new ApplicationUser
@@ -202,7 +202,7 @@ namespace NatzHarmonyCapstone.Data
                 Id = "00000000-ffff-ffff-ffff-ffffffffffab"
             };
             var passwordHash2 = new PasswordHasher<ApplicationUser>();
-            user.PasswordHash = passwordHash2.HashPassword(userExample, "Admin8*");
+            userExample.PasswordHash = passwordHash2.HashPassword(userExample, "Admin8*");
             modelBuilder.Entity<ApplicationUser>().HasData(userExample);
 
             ApplicationUser userExample2 = new ApplicationUser
@@ -227,7 +227,7 @@ namespace NatzHarmonyCapstone.Data
                 Id = "00000000-ffff-ffff-ffff-ffffffffffac"
             };
             var passwordHash3 = new PasswordHasher<ApplicationUser>();
-            user.PasswordHash = passwordHash3.HashPassword(userExample2, "Admin8*");
+            userExample2.PasswordHash = passwordHash3.HashPassword(userExample2, "Admin8*");
             modelBuilder.Entity<ApplicationUser>().HasData(userExample2);
 
             ApplicationUser userExample3 = new ApplicationUser
@@ -252,7 +252,7 @@ namespace NatzHarmonyCapstone.Data
                 Id = "00000000-ffff-ffff-ffff-ffffffffffad"
             };
             var passwordHash4 = new PasswordHasher<ApplicationUser>();
-            user.PasswordHash = passwordHash4.HashPassword(userExample3, "Admin8*");
+            userExample3.PasswordHash = passwordHash4.HashPassword(userExample3, "Admin8*");
             modelBuilder.Entity<ApplicationUser>().HasData(userExample3);
 
             ApplicationUser userExample4 = new ApplicationUser
@@ -277,7 +277,7 @@ namespace NatzHarmonyCapstone.Data
                 Id = "00000000-ffff-ffff-ffff-ffffffffffae"
             };
             var passwordHash5 = new PasswordHasher<ApplicationUser>();
-            user.PasswordHash = passwordHash5.HashPassword(userExample4, "Admin8*");
+            userExample4.PasswordHash = passwordHash5.HashPassword(userExample4, "Admin8*");
             modelBuilder.Entity<ApplicationUser>().HasData(userExample4);
 
             ApplicationUser userExample5 = new ApplicationUser
@@ -302,7 +302,7 @@ namespace NatzHarmonyCapstone.Data
                 Id = "00000000-ffff-ffff-ffff-ffffffffffaf"
             };
             var passwordHash6 = new PasswordHasher<ApplicationUser>();
-            user.PasswordHash = passwordHash6.HashPassword(userExample5, "Admin8*");
+            userExample5.PasswordHash = passwordHash6.HashPassword(userExample5, "Admin8*");
             modelBuilder.Entity<ApplicationUser>().HasData(userExample5);
 
             //this line makes the Countries
