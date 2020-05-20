@@ -11,8 +11,33 @@
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
             <h4>Create a new account.</h4>
             <hr />
+            <div class="tab" id="Section0">
+                <div class="card border-primary mb-3" style="max-width: 20rem;">
+                <h5 class="card-title text-center align-middle">Are you at least 18 years or older? </h5>
+                </div>
+                <input type="hidden" id="placeholder" value="true" />
+                <button class="btn btn-warning" id="yesBtn1">Yes</button>
+                <button class="btn btn-secondary" id="noBtn">No</button>
+            </div>
+            <div class="tab" id="Section0">
+                <div class="card border-primary mb-3" style="max-width: 20rem;">
+                    <h5 class="card-title text-center align-middle">Are you a permanent resident and have had a green card for more than 5 years? </h5>
+                </div>
+                <button class="btn btn-warning" id="yesBtn2">Yes</button>
+                <button class="btn btn-secondary" id="noBtn">No</button>
+            </div>
+            <div class="tab" id="Section0">
+                <div class="card border-primary mb-3" style="max-width: 20rem;">
+                    <h5 class="card-title text-center align-middle">Can you read, write, and speak basic English?</h5>
+                </div>
+                <button class="btn btn-warning" id="yesBtn3">Yes</button>
+                <button class="btn btn-secondary" id="noBtn">No</button>
+            </div>
             <div class="tab" id="Section1">
-                <input id="isMentor" asp-for="Input.IsMentor" value="false" />
+                <div class="card border-primary mb-3" style="max-width: 20rem;">
+                    <h5 class="card-title text-center align-middle">Can you read, write, and speak basic English?</h5>
+                </div>
+                <input type="hidden" id="isMentor" asp-for="Input.IsMentor" value="false" />
                 <button class="btn btn-primary" id="mentorBtnTru">Become a Mentor</button>
                 <button class="btn btn-primary" id="mentorBtnFal">Find a Mentor</button>
             </div>
@@ -45,10 +70,9 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Input.ConfirmPassword"></label>
-                    <input asp-for="Input.ConfirmPassword" class="form-control" />
+                    <input type="password" asp-for="Input.ConfirmPassword" class="form-control" />
                     <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                 </div>
-                <button id="" class="btn btn-primary">Next</button>
             </div>
             <div class="tab" id="Section3">
                 <div class="form-group">
@@ -74,7 +98,7 @@
                 </div>
             </div>
             <div class="tab" id="Section4">
-               
+
                 <div class="form-group">
                     <label asp-for="Input.CountryId"></label>
                     <select asp-for="Input.CountryId" class="form-control" asp-items="@Model.CountryOptions"></select>
@@ -106,12 +130,13 @@
                     <label asp-for="Input.Availability"></label>
                     <select asp-for="Input.Availability" class="form-control" asp-items="@Model.AvailabilityOptions"></select>
                 </div>
+            <button type="submit" class="btn btn-primary">Register</button>
             </div>
 
             <div style="overflow:auto;">
                 <div style="float:right;">
-                    <button type="button" id="prevBtn">Previous</button>
-                    <button type="button" id="nextBtn">Next</button>
+                    <button class="btn btn-outline-warning" type="button" id="prevBtn">Previous</button>
+                    <button class="btn btn-warning" type="button" id="nextBtn">Next</button>
                 </div>
             </div>
 
@@ -123,9 +148,11 @@
                 <span class="step"></span>
                 <span class="step"></span>
                 <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
             </div>
 
-            <button type="submit" class="btn btn-primary">Register</button>
         </form>
     </div>
     <script>
@@ -136,6 +163,9 @@
         const mentorFalse = document.getElementById("mentorBtnFal")
         const nextBtn = document.getElementById("nextBtn")
         const prevBtn = document.getElementById("prevBtn")
+        const yesBtn1 = document.getElementById("yesBtn1")
+        const yesBtn2 = document.getElementById("yesBtn2")
+        const yesBtn3 = document.getElementById("yesBtn3")
 
         //"Views" by section
         const Section1 = document.getElementById("Section1")
@@ -163,15 +193,15 @@
             let x = document.getElementsByClassName("tab");
             x[n].style.display = "block";
 
-            if (n == 0) {
+            if (n <= (x.length - 6)) {
                 document.getElementById("prevBtn").style.display = "none";
             } else {
                 document.getElementById("prevBtn").style.display = "inline";
             }
-            if (n == (x.length - 1)) {
-                document.getElementById("nextBtn").innerHTML = "Submit";
+            if (n <= (x.length - 6) || n >= (x.length - 1)) {
+                document.getElementById("nextBtn").style.display = "none";
             } else {
-                document.getElementById("nextBtn").innerHTML = "Next";
+                document.getElementById("nextBtn").style.display = "inline";
             }
             fixStepIndicator(n)
         }
@@ -180,7 +210,7 @@
 
 
         const nextPrev = (n) => {
-           
+
             var x = document.getElementsByClassName("tab");
             if (n == 1 && !validateForm()) return false;
             x[currentTab].style.display = "none";
@@ -190,6 +220,10 @@
                 return false;
             }
             showTab(currentTab);
+        }
+
+        const yesNext = (n) => {
+
         }
 
         ////unsure if need this function
@@ -225,12 +259,34 @@
         });
 
         nextBtn.addEventListener("click", evt => {
+            evt.preventDefault();
             nextPrev(1)
         });
-
         prevBtn.addEventListener("click", evt => {
+            evt.preventDefault();
             nextPrev(-1)
         });
+        yesBtn1.addEventListener("click", evt => {
+            evt.preventDefault();
+            nextPrev(1)
+        });
+        yesBtn2.addEventListener("click", evt => {
+            evt.preventDefault();
+            nextPrev(1)
+        });
+        yesBtn3.addEventListener("click", evt => {
+            evt.preventDefault();
+            nextPrev(1)
+        });
+        mentorBtnTru.addEventListener("click", evt => {
+            evt.preventDefault();
+            nextPrev(1)
+        });
+        mentorBtnFal.addEventListener("click", evt => {
+            evt.preventDefault();
+            nextPrev(1)
+        })
+
 
     </script>
 </div>
@@ -238,3 +294,41 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+
+@*const showTab = (n) => {
+        let x = document.getElementsByClassName("tab");
+        x[n].style.display = "block";
+
+        if (n == 0) {
+            document.getElementById("prevBtn").style.display = "none";
+        } else {
+            document.getElementById("prevBtn").style.display = "inline";
+        }
+        if (n == (x.length - 1)) {
+            document.getElementById("nextBtn").style.display = "none";
+        } else {
+            document.getElementById("nextBtn").innerHTML = "Next";
+        }
+        fixStepIndicator(n)
+    }*@
+
+@*const showTab = (n) => {
+            let x = document.getElementsByClassName("tab");
+            x[n].style.display = "block";
+
+            if (n == 0) {
+                document.getElementById("prevBtn").style.display = "none";
+            } else if (n <= (x.Length - 6)) {
+                document.getElementById("prevBtn").innerHTML = "No";
+            } else {
+                document.getElementById("prevBtn").style.display = "inline";
+            }
+            if (n == (x.length - 1)) {
+                document.getElementById("nextBtn").style.display = "none";
+            } else if (n <= (x.length - 6)) {
+                document.getElementById("nextBtn").innerHTML = "Yes";
+            } else { document.getElementById("nextBtn").innerHTML = "Next";
+            }
+            fixStepIndicator(n)
+        }*@

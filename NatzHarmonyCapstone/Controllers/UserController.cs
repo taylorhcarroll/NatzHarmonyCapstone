@@ -50,12 +50,22 @@ namespace NatzHarmonyCapstone.Controllers
 
         public async Task<ActionResult> MyMatches()
         {
+
             var currentUser = await GetCurrentUserAsync();
             var currentUserId = currentUser.Id.ToString();
             var user = await _context.ApplicationUsers
                 .Include(u => u.Languages)
                     .ThenInclude(ul => ul.Language)
                         .FirstOrDefaultAsync(user => user.Id == currentUserId);
+
+            var test = _context.ApplicationUsers
+                  .Include(u => u.UserMentors)
+                      .ThenInclude(um => um.Mentor)
+                  .FirstOrDefault(u => user.Id == u.Id);
+            if (test.UserMentors.Count != 0)
+            {
+                return RedirectToAction("Index", "Messages");
+            }
 
             var matches = MatchEngine(user);
 
@@ -333,7 +343,6 @@ namespace NatzHarmonyCapstone.Controllers
                             Id = reader.GetString(reader.GetOrdinal("Id")),
                             FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
                             LastName = reader.GetString(reader.GetOrdinal("LastName")),
-                            //AvatarUrl = reader.GetString(reader.GetOrdinal("AvatarUrl")),
                             Gender = reader.GetString(reader.GetOrdinal("Gender")),
                             Availability = reader.GetString(reader.GetOrdinal("Availability")),
                             CountryId = reader.GetInt32(reader.GetOrdinal("CountryId"))

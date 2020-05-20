@@ -1,59 +1,56 @@
-﻿@model IEnumerable<NatzHarmonyCapstone.Models.Messages>
+﻿@model IEnumerable<NatzHarmonyCapstone.Models.ViewModels.ConversationItem>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h4>Messages</h4>
 
 <p>
-    <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Sender)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Recipient)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TimeStamp)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsRead)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sender.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Recipient.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TimeStamp)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsRead)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MessagesId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MessagesId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MessagesId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+
+@foreach (var item in Model)
+{
+    <div style="margin-bottom: 10px; border-radius: 8px;" class="conversationItem @(item.IsRead == true || item.RecentMessage.SenderId == item.User.Id ? "card text-white bg-primary" : "card text-white bg-warning")">
+            <table class="table table-sm">
+                <tbody>
+                    <tr>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Match.Id">
+                                @if (item.Match.AvatarUrl == null)
+                                {
+                                    <img src="~/images/logo2.svg" style="max-height: 75px; max-width: 75px;" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/@item.Match.AvatarUrl" style="max-height: 75px; max-width: 75px;" />
+                                }
+                            </a>
+                        </td>
+                        <td align="left" class="@(item.IsRead == true || item.RecentMessage.SenderId == item.User.Id ? "text-warning" : "text-primary") align-middle">
+                            @Html.DisplayFor(modelItem => item.Match.FirstName) @Html.DisplayFor(modelItem => item.Match.LastName)
+                        </td>
+                        <td class="text-white align-middle">
+                            @if (@item.RecentMessage.SenderId == item.User.Id)
+                            {<p class="align-middle">You: @Html.DisplayFor(modelItem => item.RecentMessage.Content) </p>}
+                        else
+                        {<p class="align-middle">@Html.DisplayFor(modelItem => item.RecentMessage.Content)</p>}
+                        </td>
+                        @if (item.RecentMessage.TimeStamp.Year == 0001)
+                        {
+                            <td>
+                            </td>
+                        }
+                        else
+                        {
+                            <td align="right" class="text-white align-middle">
+                                @item.ToString()
+                            </td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+    </div>
+    }
+

@@ -1,48 +1,97 @@
-﻿@model NatzHarmonyCapstone.Models.Messages
-
+﻿@model NatzHarmonyCapstone.Models.ViewModels.SingleConversation
 @{
     ViewData["Title"] = "Details";
 }
-
-<h1>Details</h1>
-
 <div>
     <h4>Messages</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Sender)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Sender.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Recipient)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Recipient.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TimeStamp)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TimeStamp)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsRead)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsRead)
-        </dd>
-    </dl>
+    <table class="table" style="table-layout: fixed">
+        @foreach (var item in Model.Messages)
+        {
+            if (item.Sender.Id == Model.Match.Id)
+            {
+                <thead style="">
+                    <tr stlye=display: flex; justify-content: space-around">
+                        <th colspan="2" class="text-center">
+                            @Html.DisplayFor(modelItem => item.TimeStamp)
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>
+                            @if (item.Sender.AvatarUrl == null)
+                            {
+                                <a asp-controller="User" asp-action="Details" name="id" asp-route-returnController="@Model.ReturnController" asp-route-returnAction="@Model.ReturnAction" asp-route-id="@Model.Match.Id">
+                                    <img src="~/images/logo2.svg" style="max-height: 75px; max-width: 75px;" />
+                                </a>
+                            }
+                            else
+                            {
+                                <a  asp-controller="User" asp-action="Details" name="id" asp-route-returnController="@Model.ReturnController" asp-route-returnAction="@Model.ReturnAction" asp-route-id="@Model.Match.Id">
+                                <img src="~/images/@item.Sender.AvatarUrl" style="max-height: 75px; max-width: 75px;" />
+                                </a>
+                            }
+                            @*@Html.DisplayFor(modelItem => item.Sender.FirstName) @Html.DisplayFor(modelItem => item.Sender.LastName)*@
+                        </td>
+                        <td style="vertical-align: middle" class="align-middle card text-white bg-secondary">
+                            @Html.DisplayFor(modelItem => item.Content)
+                        </td>
+                    </tr>
+                </tbody>
+            }
+            else
+            {
+                <thead>
+                    <tr class="mx-auto">
+                        <th colspan="2" class="text-center">
+                            @Html.DisplayFor(modelItem => item.TimeStamp)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="align-middle card text-white bg-primary">
+                            @Html.DisplayFor(modelItem => item.Content)
+                        </td>
+                        <td>
+                            @if (item.Sender.AvatarUrl == null)
+                            {
+                                <a asp-controller="User" asp-action="MyProfile">
+                                    <img align="right" src="~/images/logo2.svg" style="max-height: 75px; max-width: 75px;" />
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-controller="User" asp-action="MyProfile">
+                                    <img align="right" src="~/images/@item.Sender.AvatarUrl" style="max-height: 75px; max-width: 75px;" />
+                                </a>
+                            }
+                            @*@Html.DisplayFor(modelItem => item.Sender.FirstName) @Html.DisplayFor(modelItem => item.Sender.LastName)*@
+                        </td>
+                    </tr>
+                </tbody>
+            }
+        }
+    </table>
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Match.Id" name="RecipientId" class="form-control" />
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <input asp-for="Content" class="form-control" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Send" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.MessagesId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

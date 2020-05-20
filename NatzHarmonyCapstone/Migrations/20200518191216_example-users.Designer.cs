@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NatzHarmonyCapstone.Data;
 
 namespace NatzHarmonyCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200518191216_example-users")]
+    partial class exampleusers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -446,7 +448,7 @@ namespace NatzHarmonyCapstone.Migrations
                             IsRead = false,
                             RecipientId = "e65db829-8ed8-433a-9e40-32bce7803339",
                             SenderId = "00000000-ffff-ffff-ffff-ffffffffffff",
-                            TimeStamp = new DateTime(2020, 5, 19, 11, 25, 5, 29, DateTimeKind.Local).AddTicks(5858)
+                            TimeStamp = new DateTime(2020, 5, 18, 12, 12, 16, 415, DateTimeKind.Local).AddTicks(7699)
                         });
                 });
 
@@ -595,13 +597,13 @@ namespace NatzHarmonyCapstone.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bfbb729b-5b15-4c53-b607-d5bad28dee8b",
+                            ConcurrencyStamp = "e2d0e7b6-4d86-4ed8-ae2d-5b3547bcf6e6",
                             Email = "admin@admin.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEJ+6/w8NHULqsc/Gg1a8/37jgfOtm+3qPH4hBxIUAMtGGGHpS1tiFAQlcfa88jG3A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBgFzxoueiclI3mAW+Z8mmDfhUnfOEWYN4n72HA+cDre6cM8kYwc9xP3NmhM9n86dQ==",
                             PhoneNumber = "6155555555",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
@@ -621,13 +623,12 @@ namespace NatzHarmonyCapstone.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffaa",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "066741e0-e163-407e-952e-e6fa36db25ea",
+                            ConcurrencyStamp = "e68a60ec-e25e-43ba-b517-949765e8b5a0",
                             Email = "tirrc@admin.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "TIRRC@ADMIN.COM",
                             NormalizedUserName = "TIRRC@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEI2ZIBVHI9+OCBsYVUARf9ue/NeNnLHxYU2DlZgRDA8Z4ZXJzJ/PctdhCv8SdUwB4g==",
                             PhoneNumber = "6155555556",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794578",
@@ -647,20 +648,18 @@ namespace NatzHarmonyCapstone.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffab",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7cba8164-a3c9-4994-a5c1-c5513e13e7b8",
+                            ConcurrencyStamp = "4c3d5df6-65d0-4062-aa74-ab86bc10378d",
                             Email = "adam@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADAM@EXAMPLE.COM",
                             NormalizedUserName = "ADAM@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEK+/E738IQFSYdXcDWtG2Vz+Spatr06vjC2EoLrHZPy5qTZ8OtXALmzJvlPeMIA5Fg==",
                             PhoneNumber = "6155555556",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794579",
                             TwoFactorEnabled = false,
                             UserName = "adam@example.com",
                             Admin = false,
-                            Availability = "Mornings",
                             CountryId = 1,
                             CountryPref = false,
                             DoB = new DateTime(1992, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -676,20 +675,18 @@ namespace NatzHarmonyCapstone.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffac",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c709ff51-d602-45b1-9c0e-6421a4e223b2",
+                            ConcurrencyStamp = "729040a1-e87e-4545-a738-3dff039e87b3",
                             Email = "namita@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "NAMITA@EXAMPLE.COM",
                             NormalizedUserName = "NAMITA@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEE6iY6APROM5pj1X+a+GTMR17rYdoP/y7SVRyiTf8krzs3m8SqUi+z2Jk8cXEujFPg==",
                             PhoneNumber = "6155555557",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794580",
                             TwoFactorEnabled = false,
                             UserName = "namita@example.com",
                             Admin = false,
-                            Availability = "Midday",
                             CountryId = 2,
                             CountryPref = false,
                             DoB = new DateTime(1986, 5, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -705,20 +702,18 @@ namespace NatzHarmonyCapstone.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffad",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fd5356d0-a479-45ae-b388-402129807191",
+                            ConcurrencyStamp = "cc402ce4-3f0b-4bd3-a650-e6733c33c9e2",
                             Email = "miguel@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "MIGUEL@EXAMPLE.COM",
                             NormalizedUserName = "MIGUEL@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPbL08eULGF7m2sHiBWcfSCr0Nt3VGr0lJRsAqIHAzyeIiOmKQwsJGVMaaoaFj5KbQ==",
                             PhoneNumber = "6155555557",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794581",
                             TwoFactorEnabled = false,
                             UserName = "miguel@example.com",
                             Admin = false,
-                            Availability = "Evenings",
                             CountryId = 2,
                             CountryPref = false,
                             DoB = new DateTime(1988, 2, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -734,20 +729,18 @@ namespace NatzHarmonyCapstone.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffae",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "69c6725b-4eb1-4b74-b02d-3179e49b0ecb",
+                            ConcurrencyStamp = "bfc46f65-d3f4-4478-b0e6-b31563615b26",
                             Email = "an@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "AN@EXAMPLE.COM",
                             NormalizedUserName = "AN@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDIAqmkXWCVd0/BwrEpDGYKn0Zv4pt3tGPMFcHVK/9p6mtb0XDuxH1naWy4Z9A07Tw==",
                             PhoneNumber = "6155555557",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794582",
                             TwoFactorEnabled = false,
                             UserName = "an@example.com",
                             Admin = false,
-                            Availability = "Mornings",
                             CountryId = 1,
                             CountryPref = false,
                             DoB = new DateTime(1992, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -763,20 +756,18 @@ namespace NatzHarmonyCapstone.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffaf",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c1a2efd2-6bff-40e8-9484-abcdc13f4ea7",
+                            ConcurrencyStamp = "72e81795-8daf-40ee-9ba9-cac56ac86991",
                             Email = "alexander@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ALEXANDER@EXAMPLE.COM",
                             NormalizedUserName = "ALEXANDER@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOtbGpbW87XZF7Y3dYC5+VEQvbBvthAhDGEJMGoVrU1FnBWDvNLAXyX3xG6oE+ejjQ==",
                             PhoneNumber = "6155555557",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794583",
                             TwoFactorEnabled = false,
                             UserName = "alexander@example.com",
                             Admin = false,
-                            Availability = "Evenings",
                             CountryId = 2,
                             CountryPref = false,
                             DoB = new DateTime(1988, 10, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),

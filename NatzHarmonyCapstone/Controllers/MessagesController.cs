@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using NatzHarmonyCapstone.Data;
 using NatzHarmonyCapstone.Models;
+using NatzHarmonyCapstone.Models.ViewModels;
 
 namespace NatzHarmonyCapstone.Controllers
 {
@@ -28,8 +31,136 @@ namespace NatzHarmonyCapstone.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await GetCurrentUserAsync();
-            var applicationDbContext = _context.Messages.Include(m => m.Recipient).Include(m => m.Sender);
-            return View(await applicationDbContext.ToListAsync());
+
+
+            if (user.Mentor == false)
+            {
+                //defines mentee based on currently logged in user and 
+                //includes the mentor relationships
+                var mentee = _context.ApplicationUsers
+                    .Include(u => u.UserMentors)
+                        .ThenInclude(um => um.Mentor)
+                    .FirstOrDefault(u => user.Id == u.Id);
+
+                //sets mentor as a variable from data pulled from above
+               if (mentee.UserMentors.Count == 0) 
+                {
+                    return RedirectToAction("MyMatches", "User");
+                }
+                   
+                var mentor = mentee.UserMentors.FirstOrDefault().Mentor;
+
+
+                var lastMessage = _context.Messages
+                    .Where(m => m.SenderId == mentee.Id || m.RecipientId == mentee.Id)
+                    .Where(m => m.SenderId == mentor.Id || m.RecipientId == mentor.Id)
+                    .OrderByDescending(m => m.TimeStamp)
+                    .FirstOrDefault();
+
+                if (lastMessage != null)
+                {
+                    var messagesView = new List<ConversationItem>();
+                    var conversationItem = new ConversationItem();
+                    conversationItem.Match = mentor;
+                    conversationItem.User = mentee;
+                    conversationItem.RecentMessage = lastMessage;
+                    conversationItem.IsRead = lastMessage.IsRead;
+
+                    messagesView.Add(conversationItem);
+
+                    return View(messagesView);
+                }
+                else
+                {
+                    lastMessage = new Messages()
+                    {
+                        RecipientId = mentee.Id,
+                        Recipient = mentee,
+                        Sender = mentor,
+                        SenderId = mentor.Id,
+                        Content = "This is a new match! You have not messaged this user yet."
+                    };
+
+                var messagesView = new List<ConversationItem>();
+                var conversationItem = new ConversationItem();
+                conversationItem.Match = mentor;
+                conversationItem.User = mentee;
+                conversationItem.RecentMessage = lastMessage;
+                conversationItem.IsRead = lastMessage.IsRead;
+
+                messagesView.Add(conversationItem);
+
+                return View(messagesView);
+                }
+
+            }
+            else
+            {
+                var mentor = _context.ApplicationUsers
+                    .Include(u => u.UserMentees)
+                        .ThenInclude(um => um.User)
+                    .FirstOrDefault(u => user.Id == u.Id);
+
+
+                var mentees = mentor.UserMentees.ToList();
+
+                var lastMessages = new List<Messages>();
+
+                foreach (var mentee in mentees)
+                {
+                    var lastMessage = _context.Messages
+                        .Where(m => m.SenderId == mentor.Id || m.RecipientId == mentor.Id)
+                        .Where(m => m.SenderId == mentee.UserId || m.RecipientId == mentee.UserId)
+                        .OrderByDescending(m => m.TimeStamp)
+                        .FirstOrDefault();
+                    if (lastMessage != null)
+                    {
+                        lastMessages.Add(lastMessage);
+                    }
+                    else
+                    {
+                        var placeholder = new ApplicationUser();
+                        placeholder = mentee.User;
+                        
+                        lastMessage = new Messages()
+                        {
+                            RecipientId = mentee.UserId,
+                            Recipient = mentee.User,
+                            Sender = placeholder, 
+                            SenderId = placeholder.Id,
+                            Content = "This is a new match! You have not messaged this user yet."
+                        };
+                        lastMessages.Add(lastMessage);
+                    }
+
+                }
+
+                var messagesView = new List<ConversationItem>();
+                foreach (var item in lastMessages)
+                {
+                    var conversationItem = new ConversationItem();
+                    conversationItem.User = mentor;
+                    if (item.SenderId != user.Id)
+                    {
+                        conversationItem.Match = item.Sender;
+                    }
+                    else
+                    {
+                        conversationItem.Match = item.Recipient;
+                    }
+                    conversationItem.RecentMessage = item;
+                    conversationItem.IsRead = item.IsRead;
+                    messagesView.Add(conversationItem);
+                }
+
+                return View(messagesView);
+
+            }
+
+
+
+
+
         }
 
         // GET: Messages/Help
@@ -59,23 +190,45 @@ namespace NatzHarmonyCapstone.Controllers
         }
 
         // GET: Messages/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
+            var user = await GetCurrentUserAsync();
+
+            var match = await _context.ApplicationUsers.FirstOrDefaultAsync(m => m.Id == id);
+
             var messages = await _context.Messages
-                .Include(m => m.Recipient)
-                .Include(m => m.Sender)
-                .FirstOrDefaultAsync(m => m.MessagesId == id);
+                            .Include(u => u.Sender)
+                            .Where(m => m.SenderId == user.Id || m.RecipientId == user.Id)
+                            .Where(m => m.SenderId == id || m.RecipientId == id)
+                            .OrderBy(m => m.TimeStamp)
+                            .AsNoTracking()
+                            .ToListAsync();
+            //.Where(m => m.SenderId = user.Id || m.RecipientId = user.Id)
+            //.Where(m => m.SenderId == mentee.UserId || m.RecipientId == mentee.UserId)
+            //.OrderByDescending(m => m.TimeStamp)
+
+            await UpdateMethod(messages);
+           
+            
             if (messages == null)
             {
                 return NotFound();
             }
 
-            return View(messages);
+            var viewModel = new SingleConversation();
+            viewModel.ReturnController = "Messages";
+            viewModel.ReturnAction = "Index";
+            viewModel.ReturnId = id;
+            viewModel.Messages = messages;
+            viewModel.User = user;
+            viewModel.Match = match;
+
+            return View(viewModel);
         }
 
         // GET: Messages/Create
@@ -91,35 +244,57 @@ namespace NatzHarmonyCapstone.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MessagesId,SenderId,RecipientId,Content,TimeStamp,IsRead")] Messages messages)
+        public async Task<IActionResult> Create(string recipientId, [Bind("MessagesId,SenderId,RecipientId,Content,TimeStamp,IsRead")] SingleConversation messageItem )
         {
-            if (ModelState.IsValid)
+            var user = await GetCurrentUserAsync();
+            var newMessage = new Messages()
             {
-                _context.Add(messages);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["RecipientId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", messages.RecipientId);
-            ViewData["SenderId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", messages.SenderId);
-            return View(messages);
+                Content = messageItem.Content,
+                RecipientId = recipientId,
+                TimeStamp = DateTime.Now,
+                SenderId = user.Id,
+                IsRead = false
+            };
+    
+            _context.Add(newMessage);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", new { id = recipientId });
+
         }
 
         // GET: Messages/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> UpdateMethod(List<Messages> messages)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var messages = await _context.Messages.FindAsync(id);
+            var user = await GetCurrentUserAsync();
             if (messages == null)
             {
-                return NotFound();
+                return null;
             }
-            ViewData["RecipientId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", messages.RecipientId);
-            ViewData["SenderId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", messages.SenderId);
-            return View(messages);
+            else
+            {
+                foreach(var item in messages)
+                { 
+                    if (item.SenderId != user.Id)
+                    {
+
+                            var dataModel = new Messages()
+                            {
+                                MessagesId = item.MessagesId,
+                                SenderId = item.SenderId,
+                                RecipientId = item.RecipientId,
+                                Content = item.Content,
+                                TimeStamp = item.TimeStamp,
+                                IsRead = true,
+
+                            };
+                            _context.Messages.Update(dataModel);
+                            await _context.SaveChangesAsync();
+                    }
+                }
+                        
+                return null;
+            }
+
         }
 
         // POST: Messages/Edit/5
