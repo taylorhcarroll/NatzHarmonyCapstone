@@ -7,7 +7,8 @@ NatzHarmony is an Asp.NetCore MVC web app with Entity and Identity Frameworks st
 <img src="./NatzHarmonyCapstone/wwwroot/RM-images/natz1.PNG" height="400">   
 <img src="./NatzHarmonyCapstone/wwwroot/RM-images/natz2.PNG" height="400">   
 <img src="./NatzHarmonyCapstone/wwwroot/RM-images/natz3.PNG" height="400">   
-## Hi-Fidelity Figma Mockup
+
+## Hi-Fidelity Figma Mockup:
 https://www.figma.com/proto/TJp9ggRNziv6yTAAmMjX6p/Casa-Asafran?node-id=22%3A0&scaling=min-zoom
 
 ## Case Study:
