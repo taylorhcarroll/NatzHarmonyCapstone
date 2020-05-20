@@ -12,8 +12,8 @@ NatzHarmony is an Asp.NetCore MVC web app with Entity and Identity Frameworks st
   </tr>
   <tr>
     <td><img src="./NatzHarmonyCapstone/wwwroot/RM-images/natz3.PNG" height="400"></td>
-    <td><img src="./NatzHarmonyCapstone/wwwroot/RM-images/natz2.PNG" height="400"></td>
     <td><img src="./NatzHarmonyCapstone/wwwroot/RM-images/natz1.PNG" height="400"></td>
+    <td><img src="./NatzHarmonyCapstone/wwwroot/RM-images/natz2.PNG" height="400"></td>
   </tr>
  </table>
 
