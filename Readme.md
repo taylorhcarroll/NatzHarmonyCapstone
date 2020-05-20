@@ -4,6 +4,8 @@ This is a mentorship program for a local non-profit TIRRC (Tennessee Immigrant a
 
 NatzHarmony is an Asp.NetCore MVC web app with Entity and Identity Frameworks styled with a bootstrap theme from Bootswatch.
 
+<img src="./NatzHarmonyCapstone/wwwroot/RM-images/natz1.PNG">   
+
 ## Hi-Fidelity Mockup (Figma):
 https://www.figma.com/proto/TJp9ggRNziv6yTAAmMjX6p/Casa-Asafran?node-id=22%3A0&scaling=min-zoom
 
