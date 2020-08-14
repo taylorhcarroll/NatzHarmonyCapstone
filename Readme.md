@@ -37,7 +37,7 @@ From your terminal run ```git clone git@github.com:taylorhcarroll/NatzHarmonyCap
 
 Open Visual Studio
 
-Under the tools tab, open the NuGet Package Manager console and run Update-Database to run migrations
+Under the tools tab, open the NuGet Package Manager console and run ```Update-Database``` to run migrations
 
 Build and run the application after migrations are complete
 
