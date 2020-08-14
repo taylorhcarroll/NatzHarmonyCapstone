@@ -33,7 +33,7 @@ https://bit.ly/Alcanza2020
 
 ## Installation
 
-From your terminal run git clone ```git@github.com:taylorhcarroll/NatzHarmonyCapstone.git```
+From your terminal run ```git clone git@github.com:taylorhcarroll/NatzHarmonyCapstone.git```
 
 Open Visual Studio
 
